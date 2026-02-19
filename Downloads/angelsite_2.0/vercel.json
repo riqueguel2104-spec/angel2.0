@@ -2,6 +2,7 @@
   "version": 2,
   "cleanUrls": true,
   "rewrites": [
+    { "source": "/", "destination": "/index.html" },
     { "source": "/api/(.*)", "destination": "/api/login.js" },
     { "source": "/adm", "destination": "/api/login.js" },
     { "source": "/login", "destination": "/api/login.js" },
