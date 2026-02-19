@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Sobre Nós - Angel Mystery</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(180deg, #E0F0FF, #F6FBFF);
+      color: #034078;
+      overflow-x: hidden;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes glow {
+      0% { box-shadow: 0 0 20px rgba(0,174,239,0.2); }
+      100% { box-shadow: 0 0 40px rgba(0,174,239,0.45); }
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(0,174,239,0.2);
+      z-index: 1000;
+    }
+
+    .nav {
+      max-width: 1200px;
+      margin: auto;
+      padding: 15px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #00AEEF;
+    }
+
+    .logo span { color: #74D3FF; }
+    .logo-img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
+
+    .menu a {
+      margin: 0 15px;
+      color: #034078;
+      font-weight: 500;
+    }
+
+    .menu a:hover { color: #00AEEF; }
+
+    /* MENU DE USUÁRIO (CINNOMOROLL STYLE) */
+    .auth-wrapper { display: flex; align-items: center; }
+
+    .login-btn {
+      background: linear-gradient(90deg, #00AEEF, #74D3FF);
+      padding: 10px 26px;
+      border-radius: 30px;
+      color: #fff;
+      font-weight: 600;
+      box-shadow: 0 10px 30px rgba(0,174,239,0.4);
+      cursor: pointer;
+    }
+
+    .user-profile-menu {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #fff;
+      padding: 5px 15px 5px 5px;
+      border-radius: 50px;
+      border: 1px solid #74D3FF;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .user-avatar-nav {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      border: 2px solid #00AEEF;
+      object-fit: cover;
+    }
+
+    .dropdown-box {
+      position: absolute;
+      top: 55px;
+      right: 0;
+      width: 240px;
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,174,239,0.2);
+      border: 1px solid #E0F0FF;
+      display: none;
+      overflow: hidden;
+      z-index: 1100;
+    }
+
+    .dropdown-box.active { display: block; animation: fadeUp 0.3s ease; }
+
+    .dropdown-info {
+        padding: 15px;
+        background: #F6FBFF;
+        border-bottom: 1px solid #E0F0FF;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .dropdown-info span.name { font-weight: 700; font-size: 0.9rem; color: #034078; }
+    .dropdown-info span.role { font-size: 0.75rem; color: #00AEEF; font-weight: 600; }
+
+    .dropdown-item {
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      color: #034078;
+      font-weight: 500;
+    }
+
+    .dropdown-item:hover { background: #F6FBFF; color: #00AEEF; }
+    
+    .logout-item { color: #ff5c5c !important; border-top: 1px solid #E0F0FF; }
+
+    .angel-toast {
+      position: fixed; top: 85px; left: 50%; transform: translateX(-50%);
+      background: #00AEEF; color: #fff; padding: 10px 20px;
+      border-radius: 50px; font-weight: 600; z-index: 2000; display: none;
+    }
+
+    /* ===== CONTEÚDO (MANTIDO) ===== */
+    .hero {
+      min-height: 80vh;
+      padding-top: 140px;
+      max-width: 1200px;
+      margin: auto;
+      padding-inline: 25px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+      animation: fadeUp 1.2s ease;
+    }
+
+    .hero h1 { font-size: 3.5rem; line-height: 1.1; }
+    .hero h1 span { color: #00AEEF; }
+    .hero p { font-size: 1.1rem; line-height: 1.8; margin-top: 20px; }
+    .hero img { width: 100%; max-width: 380px; border-radius: 30px; box-shadow: 0 25px 70px rgba(0,174,239,0.35); }
+
+    .about-section {
+      padding: 120px 25px;
+      max-width: 1200px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .about-text h2 { font-size: 2.8rem; margin-bottom: 20px; }
+    .about-text h2 span { color: #00AEEF; }
+    .about-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px; margin-top: 30px; }
+
+    .about-card {
+      position: relative;
+      background: rgba(255,255,255,0.9);
+      padding: 35px 30px;
+      border-radius: 24px;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0,174,239,0.25);
+    }
+
+    .about-card:hover { transform: translateY(-10px) scale(1.02); animation: glow 1.5s infinite alternate; }
+    .about-card h4 { font-size: 1.4rem; margin-bottom: 14px; color: #00AEEF; }
+
+    .choose-section { padding: 100px 25px; max-width: 1200px; margin: auto; }
+    .choose-section h2 { text-align: center; font-size: 2.8rem; margin-bottom: 50px; }
+    .choose-section span { color: #00AEEF; }
+    .choose-container { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+
+    .choose-column {
+      position: relative;
+      background: rgba(255,255,255,0.95);
+      padding: 35px;
+      border-radius: 26px;
+      box-shadow: 0 20px 55px rgba(0,174,239,0.25);
+      overflow: hidden;
+    }
+
+    .choose-column::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 6px;
+      background: linear-gradient(90deg, #00AEEF, #74D3FF);
+    }
+
+    .choose-column h3 { text-align: center; font-size: 1.8rem; margin-bottom: 25px; color: #00AEEF; }
+    .choose-column ul { list-style: none; line-height: 1.8; }
+    .choose-column ul li::before { content: "✔️ "; color: #00AEEF; }
+    .choose-column ul li.negative::before { content: "❌ "; }
+
+    /* ===== FOOTER ===== */
+    footer {
+      padding: 80px 25px 40px;
+      border-top: 1px solid rgba(0,174,239,0.3);
+      background: #E0F0FF;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 50px;
+    }
+
+    .footer-logo { font-size: 2rem; font-weight: 700; color: #00AEEF; margin-bottom: 15px; }
+    .footer-column h4 { margin-bottom: 20px; color: #034078; font-weight: 700; }
+    .footer-column a { display: block; margin-bottom: 10px; font-size: 0.9rem; color: #034078; }
+    .footer-column a:hover { color: #00AEEF; padding-left: 5px; }
+    .footer-bottom { margin-top: 50px; text-align: center; font-size: 0.85rem; border-top: 1px solid rgba(0,174,239,0.1); padding-top: 20px; }
+
+    @media (max-width: 900px) {
+      .hero, .about-section, .choose-container { grid-template-columns: 1fr; text-align: center; }
+      .footer-container { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="angelToast" class="angel-toast"></div>
+
+<header>
+  <div class="nav">
+    <a href="index.html" class="logo">
+      <img src="imagens/cinnamoroll.png" class="logo-img">
+      Angel <span>Mystery</span>
+    </a>
+
+    <div class="menu">
+      <a href="index.html">Início</a>
+      <a href="areaangel.html">Área Angel</a>
+      <a href="blog.html">Blog</a>
+      <a href="avaliação.html">Avaliações</a>
+      <a href="sobre.html">Sobre Nós</a>
+    </div>
+
+    <div id="auth-section" class="auth-wrapper">
+      <a href="/login" class="login-btn" id="login-btn">Fazer Login</a>
+    </div>
+  </div>
+</header>
+
+<main>
+    <section class="hero">
+      <div>
+        <h1>Sobre <span>Angel Mystery</span></h1>
+        <p>Somos apaixonados por criar experiências seguras e divertidas para você comprar Robux com confiança. Trazemos leveza e confiabilidade para cada detalhe do nosso site.</p>
+      </div>
+      <img src="imagens/cinnamoroll1.png" alt="Cinnamoroll" />
+    </section>
+
+    <section class="about-section">
+      <div class="about-text">
+        <h2>Nossa <span>Missão</span></h2>
+        <p>Oferecer uma plataforma segura, transparente e amigável para compras de Robux, garantindo que cada usuário tenha uma experiência tranquila e protegida do início ao fim.</p>
+
+        <div class="about-cards">
+          <div class="about-card">
+            <h4>💙 Segurança</h4>
+            <p>Proteção total das suas informações com criptografia de ponta a ponta.</p>
+          </div>
+          <div class="about-card">
+            <h4>✨ Confiabilidade</h4>
+            <p>Entrega garantida ou seu dinheiro de volta, sempre transparente.</p>
+          </div>
+          <div class="about-card">
+            <h4>🌟 Experiência</h4>
+            <p>Interface intuitiva e suporte amigável para todas as suas compras.</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <img src="imagens/cinnamoroll2.png" alt="Cinnamoroll fofinho" style="width: 100%; border-radius: 30px;" />
+      </div>
+    </section>
+
+    <section class="choose-section">
+      <h2>Por que escolher a <span>Angel Mystery</span>?</h2>
+      <div class="choose-container">
+        <div class="choose-column">
+          <h3>Angel Mystery</h3>
+          <ul>
+            <li>Entrega rápida e automatizada</li>
+            <li>Suporte rápido e amigável</li>
+            <li>Privacidade total</li>
+            <li>Estoque real e sem risco de ban</li>
+            <li>Melhor preço do mercado</li>
+            <li>Promoções exclusivas</li>
+          </ul>
+        </div>
+        <div class="choose-column">
+          <h3>Outras Lojas</h3>
+          <ul>
+            <li class="negative">Entregas demoradas</li>
+            <li class="negative">Suporte lento ou inexistente</li>
+            <li class="negative">Métodos de envio arriscados</li>
+            <li class="negative">Sem estoque garantido</li>
+            <li class="negative">Preços flutuantes e taxas ocultas</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+</main>
+
+<footer>
+  <div class="footer-container">
+    <div>
+      <div class="footer-logo">Angel Mystery</div>
+      <p>O site mais seguro para suas compras de Robux.</p>
+    </div>
+    <div class="footer-column">
+      <h4>Plataforma</h4>
+      <a href="como-funciona.html">Como funciona</a>
+      <a href="faq.html">FAQ</a>
+    </div>
+    <div class="footer-column">
+      <h4>Empresa</h4>
+      <a href="sobre.html">Sobre nós</a>
+      <a href="contato.html">Contato</a>
+    </div>
+    <div class="footer-column">
+      <h4>Legal</h4>
+      <a href="termos.html">Termos de Compra</a>
+      <a href="privacidade.html">Política de Privacidade</a>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 Angel Mystery. Todos os direitos reservados.</div>
+</footer>
+
+<script>
+  function showToast(msg) {
+    const toast = document.getElementById('angelToast');
+    toast.innerText = msg;
+    toast.style.display = 'block';
+    setTimeout(() => { toast.style.display = 'none'; }, 3000);
+  }
+
+  function toggleUserMenu() {
+    const dropdown = document.getElementById('aboutDropdown');
+    if(dropdown) dropdown.classList.toggle('active');
+  }
+
+  function handleLogout(e) {
+    e.preventDefault();
+    showToast("Nuvem de tchau! Saindo com cuidado... 💙");
+    setTimeout(() => {
+      localStorage.removeItem('user');
+      localStorage.removeItem('adm_user');
+      localStorage.removeItem('adm_avatar');
+      localStorage.removeItem('adm_role');
+      window.location.reload();
+    }, 1500);
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    // --- LÓGICA DE LOGIN (ADMIN & USER) ---
+    const user = JSON.parse(localStorage.getItem('user'));
+    const admUser = localStorage.getItem('adm_user');
+    const admAvatar = localStorage.getItem('adm_avatar');
+    const admRole = localStorage.getItem('adm_role');
+    const authSection = document.getElementById('auth-section');
+
+    let activeUser = null;
+
+    if (admUser) {
+        activeUser = {
+            username: admUser,
+            avatar: (admAvatar && admAvatar !== 'staffs/') ? admAvatar : 'imagens/cinnamoroll.png',
+            label: admRole ? `${admRole} 👑` : "Administrador 👑",
+            isAdm: true
+        };
+    } else if (user) {
+        activeUser = {
+            username: user.username,
+            avatar: user.avatar,
+            label: "Usuário Verificado ☁️",
+            isAdm: false
+        };
+    }
+
+    if (activeUser && authSection) {
+      authSection.innerHTML = `
+        <div class="user-profile-menu" onclick="toggleUserMenu()">
+          <img src="${activeUser.avatar}" class="user-avatar-nav">
+          <span style="font-weight: 600; font-size: 0.9rem; color: #034078;">${activeUser.username}</span>
+          <i class="fa-solid fa-caret-down" style="font-size: 0.8rem; color: #00AEEF;"></i>
+          
+          <div class="dropdown-box" id="aboutDropdown">
+            <div class="dropdown-info">
+                <span class="name">${activeUser.username}</span>
+                <span class="role">${activeUser.label}</span>
+            </div>
+            <a href="perfil.html" class="dropdown-item"><i class="fa-solid fa-user-astronaut"></i> Meu Perfil</a>
+            <a href="chat.html" class="dropdown-item"><i class="fa-solid fa-comments"></i> Chat Global</a>
+            
+            ${activeUser.isAdm ? `
+                <a href="painel-adm.html" class="dropdown-item" style="color: #00AEEF;">
+                    <i class="fa-solid fa-crown"></i> Painel Admin
+                </a>
+            ` : ''}
+
+            <a href="#" onclick="handleLogout(event)" class="dropdown-item logout-item"><i class="fa-solid fa-cloud-sun"></i> Sair</a>
+          </div>
+        </div>
+      `;
+    }
+  });
+
+  window.onclick = function(event) {
+    if (!event.target.closest('.user-profile-menu')) {
+      const dropdown = document.getElementById('aboutDropdown');
+      if (dropdown) dropdown.classList.remove('active');
+    }
+  }
+</script>
+
+</body>
+</html>

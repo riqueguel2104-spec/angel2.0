@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angel Mystery • Admin Access</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #f4a7c5; /* Rosa My Sweet Piano */
+            --primary-dark: #e092b1;
+            --accent: #bca5ff; /* Lilás suave */
+            --text-dark: #7a5c66; /* Marrom acinzentado suave */
+            --text-gray: #b59ba4;
+            --bg-soft: #fff5f8;
+            --white: #ffffff;
+            --error: #ff8787;
+            --success: #8ce99a;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-soft);
+            background-image: 
+                radial-gradient(var(--primary) 0.5px, transparent 0.5px),
+                radial-gradient(var(--primary) 0.5px, var(--bg-soft) 0.5px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Elementos Decorativos */
+        .decoration {
+            position: absolute;
+            z-index: -1;
+            filter: blur(50px);
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: pulse 8s infinite alternate;
+        }
+        .dec-1 { width: 300px; height: 300px; background: var(--primary); top: -5%; left: -5%; }
+        .dec-2 { width: 250px; height: 250px; background: var(--accent); bottom: -5%; right: -5%; }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.4; }
+            100% { transform: scale(1.2); opacity: 0.6; }
+        }
+
+        .container {
+            display: flex;
+            width: 900px;
+            max-width: 95%;
+            height: 550px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            border-radius: 40px;
+            box-shadow: 0 25px 50px rgba(244, 167, 197, 0.2);
+            overflow: hidden;
+            border: 2px solid var(--white);
+            animation: containerEntry 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes containerEntry {
+            from { opacity: 0; transform: scale(0.9) translateY(40px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* Lado da Ilustração */
+        .side-illustration {
+            flex: 1;
+            background: linear-gradient(135deg, #fff0f6 0%, #f4a7c5 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            position: relative;
+        }
+
+        .logo-wrapper {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 50%;
+            box-shadow: 0 15px 35px rgba(244, 167, 197, 0.3);
+            margin-bottom: 25px;
+        }
+
+        .side-illustration img {
+            width: 150px;
+            height: 150px;
+            object-fit: contain;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+        }
+
+        .brand-text h1 {
+            color: var(--white);
+            font-size: 24px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        /* Lado do Form */
+        .side-form {
+            flex: 1.2;
+            padding: 50px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: var(--white);
+        }
+
+        .header-box { margin-bottom: 35px; }
+        
+        h2 { 
+            color: var(--text-dark); 
+            font-size: 32px; 
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .subtitle { 
+            color: var(--text-gray); 
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Estilização dos Inputs */
+        .input-group { 
+            margin-bottom: 20px; 
+            position: relative; 
+        }
+
+        .input-group i.input-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+            transition: var(--transition);
+        }
+
+        input {
+            width: 100%;
+            padding: 16px 20px 16px 55px;
+            border: 2px solid #fff0f5;
+            border-radius: 20px;
+            outline: none;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            transition: var(--transition);
+            color: var(--text-dark);
+            background: #fffcfd;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            background: var(--white);
+            box-shadow: 0 8px 20px rgba(244, 167, 197, 0.15);
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: var(--text-gray);
+            padding: 5px;
+        }
+
+        /* Botão Mágico */
+        button {
+            width: 100%;
+            padding: 18px;
+            background: var(--primary);
+            border: none;
+            color: white;
+            font-weight: 700;
+            font-size: 15px;
+            letter-spacing: 1px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 15px;
+            box-shadow: 0 10px 20px rgba(244, 167, 197, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px rgba(244, 167, 197, 0.5);
+        }
+
+        button:active { transform: translateY(0); }
+
+        #msg {
+            margin-top: 20px;
+            font-size: 13px;
+            text-align: center;
+            font-weight: 600;
+            height: 20px;
+        }
+
+        /* Responsividade */
+        @media (max-width: 850px) {
+            .container { width: 400px; height: auto; flex-direction: column; border-radius: 30px; }
+            .side-illustration { padding: 30px; }
+            .side-form { padding: 40px 30px; }
+            .dec-1, .dec-2 { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="decoration dec-1"></div>
+    <div class="decoration dec-2"></div>
+
+    <div class="container">
+        <div class="side-illustration">
+            <div class="logo-wrapper">
+                <img src="https://cdn.discordapp.com/icons/1305663082990796901/a_3b9d89beb41667f588532d2d532e9b02.gif" alt="Angel Logo">
+            </div>
+            <div class="brand-text">
+                <h1>Angel Mystery</h1>
+                <p style="color: rgba(255,255,255,0.9); font-size: 12px; text-align: center; margin-top: 5px; font-weight: 500; letter-spacing: 2px;">PAINEL STAFF</p>
+            </div>
+        </div>
+
+        <div class="side-form">
+            <div class="header-box">
+                <h2>Olá, Staff! ✨</h2>
+                <div class="subtitle">Insira suas credenciais abaixo.</div>
+            </div>
+
+            <form id="loginForm" onsubmit="event.preventDefault(); fazerLogin();">
+                <div class="input-group">
+                    <i class="fa-solid fa-crown input-icon"></i>
+                    <input type="text" id="user" placeholder="Nome de Admin" required>
+                </div>
+
+                <div class="input-group">
+                    <i class="fa-solid fa-lock input-icon"></i>
+                    <input type="password" id="pass" placeholder="Senha de Acesso" required>
+                    <i class="fa-solid fa-eye toggle-password" id="btnEye" onclick="togglePassword()"></i>
+                </div>
+
+                <button type="submit" id="btnLogin">
+                    <span>ACESSAR PAINEL</span>
+                </button>
+            </form>
+
+            <p id="msg"></p>
+        </div>
+    </div>
+
+    <script>
+        function togglePassword() {
+            const passInput = document.getElementById('pass');
+            const eyeIcon = document.getElementById('btnEye');
+            if (passInput.type === 'password') {
+                passInput.type = 'text';
+                eyeIcon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                passInput.type = 'password';
+                eyeIcon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+
+        async function fazerLogin() {
+            const user = document.getElementById('user').value;
+            const pass = document.getElementById('pass').value;
+            const msg = document.getElementById('msg');
+            const btn = document.getElementById('btnLogin');
+
+            btn.disabled = true;
+            btn.innerHTML = 'VALIDANDO... ✨';
+            msg.style.color = "var(--primary)";
+            msg.innerText = "Conectando ao site...";
+
+            try {
+                // Simulação de Fetch (Substitua pela sua URL real)
+                const res = await fetch('/login-adm', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ user, pass })
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    localStorage.setItem('adm_user', data.user);
+                    msg.style.color = "var(--success)";
+                    msg.innerText = "Acesso liberado! Bem-vindo(a) de volta.";
+                    setTimeout(() => window.location.href = '/dashboard-adm', 1500);
+                } else {
+                    throw new Error();
+                }
+            } catch (err) {
+                msg.style.color = "var(--error)";
+                msg.innerText = "Credenciais incorretas, tente novamente.";
+                btn.disabled = false;
+                btn.innerHTML = 'ACESSAR PAINEL';
+            }
+        }
+    </script>
+</body>
+</html>

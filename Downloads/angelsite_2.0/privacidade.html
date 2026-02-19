@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Política de Privacidade — Angel Mystery</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; transition: all 0.3s ease; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #F8F9FF;
+      color: #4A4A6A;
+      overflow-x: hidden;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: linear-gradient(90deg, #B8D8FF, #FFD6E8);
+      border-bottom: 3px solid #C3B1E1;
+      z-index: 1000;
+    }
+
+    .nav {
+      max-width: 1200px;
+      margin: auto;
+      padding: 15px 25px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #6A5ACD;
+    }
+
+    .logo span { color: #FF8FB1; }
+
+    .logo-img {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .menu a {
+      margin: 0 15px;
+      font-weight: 600;
+    }
+
+    .menu a:hover { color: #FF8FB1; }
+
+    /* MENU DE USUÁRIO (INTEGRADO STAFF) */
+    .auth-wrapper { display: flex; align-items: center; }
+
+    .login-btn {
+      background: #6A5ACD;
+      padding: 10px 25px;
+      border-radius: 30px;
+      color: #FFF;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .user-profile-menu {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 5px 15px 5px 5px;
+      border-radius: 50px;
+      border: 2px solid #C3B1E1;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .user-avatar-nav {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      border: 2px solid #B8D8FF;
+      object-fit: cover;
+    }
+
+    .dropdown-box {
+      position: absolute;
+      top: 55px;
+      right: 0;
+      width: 240px;
+      background: #FFF;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(106, 90, 205, 0.15);
+      border: 2px solid #FFD6E8;
+      display: none;
+      overflow: hidden;
+      z-index: 1100;
+    }
+
+    .dropdown-box.active { display: block; animation: fadeUp 0.3s ease; }
+
+    .dropdown-info {
+        padding: 15px;
+        background: #fdfaff;
+        border-bottom: 1px solid #FFD6E8;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .dropdown-info span.name { font-weight: 700; font-size: 0.9rem; color: #6A5ACD; }
+    .dropdown-info span.role { font-size: 0.75rem; color: #FF8FB1; font-weight: 700; text-transform: uppercase; }
+
+    .dropdown-item {
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      color: #6A5ACD;
+      font-weight: 600;
+    }
+
+    .dropdown-item:hover { background: #F8F9FF; color: #FF8FB1; }
+    
+    .logout-item { color: #ff8fb1 !important; border-top: 1px solid #FFD6E8; }
+
+    .angel-toast {
+      position: fixed; top: 85px; left: 50%; transform: translateX(-50%);
+      background: #6A5ACD; color: #fff; padding: 10px 20px;
+      border-radius: 50px; font-weight: 600; z-index: 2000; display: none;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      min-height: 65vh;
+      padding-top: 130px;
+      max-width: 1200px;
+      margin: auto;
+      padding-inline: 25px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      animation: fadeUp 1s ease;
+    }
+
+    .badge {
+      background: #FF8FB1;
+      color: #FFF;
+      padding: 10px 24px;
+      border-radius: 30px;
+      font-weight: 700;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 { font-size: 3rem; margin-bottom: 20px; color: #6A5ACD; }
+    .hero p { line-height: 1.7; max-width: 550px; }
+    .hero-img { width: 100%; max-width: 360px; margin: auto; }
+
+    /* ===== CONTENT ===== */
+    .privacy {
+      max-width: 900px;
+      margin: auto;
+      padding: 60px 25px;
+    }
+
+    .box {
+      background: #FFFFFF;
+      border-left: 6px solid #B8D8FF;
+      padding: 30px;
+      border-radius: 20px;
+      margin-bottom: 25px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.07);
+    }
+
+    .box h3 { color: #6A5ACD; margin-bottom: 15px; font-size: 1.4rem; }
+    .box p, .box li { line-height: 1.7; }
+    ul { padding-left: 20px; }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: linear-gradient(90deg, #B8D8FF, #FFD6E8);
+      padding: 70px 25px 40px;
+      border-top: 3px solid #C3B1E1;
+      border-radius: 40px 40px 0 0;
+      margin-top: 50px;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 1.5fr repeat(3, 1fr);
+      gap: 40px;
+    }
+
+    .footer-logo-section p {
+      font-size: 0.9rem;
+      margin-top: 10px;
+      max-width: 250px;
+    }
+
+    .footer-logo { font-size: 2.2rem; font-weight: 800; color: #6A5ACD; }
+
+    .footer-column h4 { 
+      margin-bottom: 20px; 
+      color: #6A5ACD; 
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .footer-column a { 
+      display: block; 
+      margin-bottom: 12px; 
+      font-size: 0.95rem;
+      color: #5A5A8A;
+      font-weight: 500;
+    }
+
+    .footer-column a:hover { 
+      color: #FF8FB1; 
+      transform: translateX(5px);
+    }
+
+    .footer-bottom { 
+      margin-top: 50px; 
+      padding-top: 25px;
+      text-align: center; 
+      font-size: 0.85rem; 
+      border-top: 1px solid rgba(106, 90, 205, 0.1);
+      color: #6A5ACD;
+      font-weight: 600;
+    }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; text-align: center; }
+      .footer-container { 
+        grid-template-columns: 1fr 1fr; 
+        text-align: center;
+      }
+      .footer-logo-section { grid-column: span 2; display: flex; flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="angelToast" class="angel-toast"></div>
+
+<header>
+  <div class="nav">
+    <a href="index.html" class="logo">
+      <img src="imagens/little-twin-stars.png" class="logo-img">
+      Angel <span>Mystery</span>
+    </a>
+
+    <div class="menu">
+      <a href="index.html">Início</a>
+      <a href="areaangel.html">Área Angel</a>
+      <a href="blog.html">Blog</a>
+      <a href="avaliação.html">Avaliações</a>
+      <a href="sobre.html">Sobre Nós</a>
+    </div>
+
+    <div id="auth-section" class="auth-wrapper">
+      <a href="/login" class="login-btn" id="login-btn">Fazer Login</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div>
+    <div class="badge">⭐ Política de Privacidade</div>
+    <h1>Cuidamos dos seus dados com carinho</h1>
+    <p>Na Angel Mystery, sua privacidade é tratada com respeito, transparência e segurança — do jeitinho calmo 🌙✨</p>
+  </div>
+
+  <img src="imagens/little-twin-stars1.png" class="hero-img">
+</section>
+
+<section class="privacy">
+  <div class="box">
+    <h3>📌 Coleta de Informações</h3>
+    <p>Coletamos alguns dados pessoais quando você utiliza nosso site, como:</p>
+    <ul>
+      <li>Nome de usuário (ex: Roblox);</li>
+      <li>Informações de contato;</li>
+      <li>Comprovantes de pagamento;</li>
+      <li>Mensagens enviadas ao nosso atendimento.</li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <h3>🎯 Uso das Informações</h3>
+    <p>Os dados coletados são utilizados para:</p>
+    <ul>
+      <li>Processar compras e entregas;</li>
+      <li>Confirmar pagamentos;</li>
+      <li>Oferecer suporte ao cliente;</li>
+      <li>Prevenir fraudes e abusos.</li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <h3>🔒 Segurança dos Dados</h3>
+    <p>Adotamos medidas de segurança para proteger suas informações contra acessos não autorizados, vazamentos ou uso indevido.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-container">
+    <div class="footer-logo-section">
+      <div class="footer-logo">Angel Mystery</div>
+      <p>Transparência, segurança e cuidado — sempre ⭐</p>
+    </div>
+
+    <div class="footer-column">
+        <h4>Plataforma</h4>
+        <a href="como-funciona.html">Como Funciona</a>
+        <a href="faq.html">FAQ</a>
+    </div>
+
+    <div class="footer-column">
+        <h4>Empresa</h4>
+        <a href="sobre.html">Sobre nós</a>
+        <a href="contato.html">Contato</a>
+    </div>
+
+    <div class="footer-column">
+      <h4>Legal</h4>
+      <a href="termos.html">Termos de Compra</a>
+      <a href="privacidade.html">Política de Privacidade</a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    © 2026 Angel Mystery. Todos os direitos reservados.
+  </div>
+</footer>
+
+<script>
+  function showToast(msg) {
+    const toast = document.getElementById('angelToast');
+    toast.innerText = msg;
+    toast.style.display = 'block';
+    setTimeout(() => { toast.style.display = 'none'; }, 3000);
+  }
+
+  function toggleUserMenu() {
+    const dropdown = document.getElementById('privacyDropdown');
+    if(dropdown) dropdown.classList.toggle('active');
+  }
+
+  function handleLogout(e) {
+    e.preventDefault();
+    showToast("Boa noite! Saindo para as estrelas... 🌙✨");
+    setTimeout(() => {
+      localStorage.removeItem('user');
+      localStorage.removeItem('adm_user');
+      localStorage.removeItem('adm_avatar');
+      localStorage.removeItem('adm_role');
+      window.location.reload();
+    }, 1500);
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    // --- LÓGICA DE LOGIN (ADMIN & USER) ---
+    const user = JSON.parse(localStorage.getItem('user'));
+    const admUser = localStorage.getItem('adm_user');
+    const admAvatar = localStorage.getItem('adm_avatar');
+    const admRole = localStorage.getItem('adm_role');
+    const authSection = document.getElementById('auth-section');
+
+    let activeUser = null;
+
+    if (admUser) {
+        activeUser = {
+            username: admUser,
+            avatar: (admAvatar && admAvatar !== 'staffs/') ? admAvatar : 'imagens/little-twin-stars.png',
+            label: admRole ? `${admRole} 👑` : "Administrador 👑",
+            isAdm: true
+        };
+    } else if (user) {
+        activeUser = {
+            username: user.username,
+            avatar: user.avatar,
+            label: "Usuário Verificado ⭐",
+            isAdm: false
+        };
+    }
+
+    if (activeUser && authSection) {
+      authSection.innerHTML = `
+        <div class="user-profile-menu" onclick="toggleUserMenu()">
+          <img src="${activeUser.avatar}" class="user-avatar-nav">
+          <span style="font-weight: 600; font-size: 0.9rem; color: #6A5ACD;">${activeUser.username}</span>
+          <i class="fa-solid fa-star" style="font-size: 0.7rem; color: #FF8FB1;"></i>
+          
+          <div class="dropdown-box" id="privacyDropdown">
+            <div class="dropdown-info">
+                <span class="name">${activeUser.username}</span>
+                <span class="role">${activeUser.label}</span>
+            </div>
+            <a href="perfil.html" class="dropdown-item"><i class="fa-solid fa-moon"></i> Meu Perfil</a>
+            <a href="chat.html" class="dropdown-item"><i class="fa-solid fa-wand-sparkles"></i> Chat Global</a>
+
+            ${activeUser.isAdm ? `
+                <a href="painel-adm.html" class="dropdown-item" style="color: #6A5ACD;">
+                    <i class="fa-solid fa-crown"></i> Painel Admin
+                </a>
+            ` : ''}
+
+            <a href="#" onclick="handleLogout(event)" class="dropdown-item logout-item"><i class="fa-solid fa-sparkles"></i> Sair</a>
+          </div>
+        </div>
+      `;
+    }
+  });
+
+  window.onclick = function(event) {
+    if (!event.target.closest('.user-profile-menu')) {
+      const dropdown = document.getElementById('privacyDropdown');
+      if (dropdown) dropdown.classList.remove('active');
+    }
+  }
+</script>
+
+</body>
+</html>

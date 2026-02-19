@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Termos de Compra — Angel Mystery</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; transition: all 0.3s ease; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #FFF8E1;
+      color: #4A3B2A;
+      overflow-x: hidden;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: #FFE066;
+      border-bottom: 3px solid #C9A227;
+      z-index: 1000;
+    }
+
+    .nav {
+      max-width: 1200px;
+      margin: auto;
+      padding: 15px 25px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #C9A227;
+    }
+
+    .logo span { color: #FFB703; }
+    .logo-img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
+
+    .menu a { margin: 0 15px; font-weight: 600; }
+    .menu a:hover { color: #FFB703; }
+
+    /* MENU DE USUÁRIO (INTEGRADO STAFF) */
+    .auth-wrapper { display: flex; align-items: center; }
+
+    .login-btn {
+      background: #C9A227;
+      padding: 10px 25px;
+      border-radius: 30px;
+      color: #FFF;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .user-profile-menu {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #FFFDF5;
+      padding: 5px 15px 5px 5px;
+      border-radius: 50px;
+      border: 2px solid #C9A227;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .user-avatar-nav {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      border: 2px solid #FFB703;
+      object-fit: cover;
+    }
+
+    .dropdown-box {
+      position: absolute;
+      top: 55px;
+      right: 0;
+      width: 240px;
+      background: #FFFDF5;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(74, 59, 42, 0.15);
+      border: 2px solid #FFE066;
+      display: none;
+      overflow: hidden;
+      z-index: 1100;
+    }
+
+    .dropdown-box.active { display: block; animation: fadeUp 0.3s ease; }
+
+    .dropdown-info {
+        padding: 15px;
+        background: #fffbef;
+        border-bottom: 1px solid #FFE066;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .dropdown-info span.name { font-weight: 700; font-size: 0.9rem; color: #4A3B2A; }
+    .dropdown-info span.role { font-size: 0.75rem; color: #C9A227; font-weight: 700; text-transform: uppercase; }
+
+    .dropdown-item {
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      color: #4A3B2A;
+      font-weight: 600;
+    }
+
+    .dropdown-item:hover { background: #FFE066; color: #4A3B2A; }
+    .logout-item { color: #d9534f !important; border-top: 1px solid #FFE066; }
+
+    .angel-toast {
+      position: fixed; top: 85px; left: 50%; transform: translateX(-50%);
+      background: #C9A227; color: #fff; padding: 10px 20px;
+      border-radius: 50px; font-weight: 700; z-index: 2000; display: none;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      min-height: 70vh;
+      padding-top: 130px;
+      max-width: 1200px;
+      margin: auto;
+      padding-inline: 25px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      animation: fadeUp 1s ease;
+    }
+
+    .badge {
+      background: #FFB703;
+      color: #FFF;
+      padding: 10px 24px;
+      border-radius: 30px;
+      font-weight: 700;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 { font-size: 3rem; margin-bottom: 20px; }
+    .hero h1 span { color: #C9A227; }
+    .hero p { line-height: 1.7; max-width: 550px; }
+    .hero-img { width: 100%; max-width: 350px; margin: auto; }
+
+    /* ===== TERMS ===== */
+    .terms { max-width: 900px; margin: auto; padding: 60px 25px; }
+
+    .term-box {
+      background: #FFFDF5;
+      border-left: 6px solid #FFB703;
+      padding: 30px;
+      border-radius: 20px;
+      margin-bottom: 25px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+    }
+
+    .term-box h3 { color: #C9A227; margin-bottom: 15px; font-size: 1.4rem; }
+    .term-box p, .term-box li { line-height: 1.7; }
+    ul { padding-left: 20px; }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: #FFE066;
+      padding: 70px 25px 40px;
+      border-top: 3px solid #C9A227;
+      border-radius: 20px 20px 0 0;
+    }
+    .footer-container {
+      max-width: 1200px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 40px;
+    }
+    .footer-logo { font-size: 2rem; font-weight: 700; color: #C9A227; margin-bottom: 10px; }
+    .footer-column h4 { margin-bottom: 15px; color: #C9A227; }
+    .footer-column a { display: block; margin-bottom: 8px; }
+    .footer-column a:hover { color: #FFB703; }
+    .footer-bottom { margin-top: 40px; text-align: center; font-size: 0.85rem; }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; text-align: center; }
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="angelToast" class="angel-toast"></div>
+
+<header>
+  <div class="nav">
+    <a href="index.html" class="logo">
+      <img src="imagens/gudetama.png" class="logo-img">
+      Angel <span>Mystery</span>
+    </a>
+
+    <div class="menu">
+      <a href="index.html">Início</a>
+      <a href="areaangel.html">Área Angel</a>
+      <a href="blog.html">Blog</a>
+      <a href="avaliação.html">Avaliações</a>
+      <a href="sobre.html">Sobre Nós</a>
+    </div>
+
+    <div id="auth-section" class="auth-wrapper">
+      <a href="/login" class="login-btn" id="login-btn">Fazer Login</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div>
+    <div class="badge">🍳 Termos de Compra</div>
+    <h1>Leia com atenção os <span>termos da Angel Mystery</span></h1>
+    <p>Ao realizar qualquer compra em nossa plataforma, você concorda automaticamente com todas as condições descritas abaixo.</p>
+  </div>
+
+  <img src="imagens/gudetama1.png" class="hero-img">
+</section>
+
+<section class="terms">
+  <div class="term-box">
+    <h3>⭐ Compromissos da Angel Mystery</h3>
+    <ul>
+      <li>Atendimento respeitoso e profissional;</li>
+      <li>Cumprimento de prazos;</li>
+      <li>Proteção total dos dados do cliente.</li>
+    </ul>
+  </div>
+
+  <div class="term-box">
+    <h3>👤 Responsabilidades do Cliente</h3>
+    <ul>
+      <li>Fornecer informações corretas;</li>
+      <li>Conferir os dados antes de finalizar a compra;</li>
+      <li>Ler e concordar com todos os termos.</li>
+    </ul>
+  </div>
+
+  <div class="term-box">
+    <h3>⚠️ Disposições Gerais</h3>
+    <ul>
+      <li>Informações falsas ou comportamento abusivo podem resultar em recusa de atendimento ou banimento.</li>
+    </ul>
+  </div>
+
+  <div class="term-box">
+    <h3>📦 Política de Entrega</h3>
+    <ul>
+      <li>Prazo máximo de entrega: até 72 horas após confirmação do pagamento;</li>
+      <li>Em caso de atraso, o cliente pode optar por reembolso ou prioridade.</li>
+    </ul>
+  </div>
+
+  <div class="term-box">
+    <h3>🎮 Modalidades</h3>
+    <p><strong>Via Grupo:</strong> mínimo de 15 dias no grupo oficial.</p>
+    <p><strong>Via Gamepass:</strong></p>
+    <ul>
+      <li>Preço regional desativado;</li>
+      <li>Valor máximo: 1.000 Robux.</li>
+    </ul>
+  </div>
+
+  <div class="term-box">
+    <h3>💸 Política de Reembolso</h3>
+    <p><strong>Elegível se:</strong> Prazo não cumprido, produto incorreto ou erro comprovado da equipe.</p>
+    <p><strong>Não elegível se:</strong> Arrependimento, solicitação após entrega ou erro nos dados fornecidos pelo cliente.</p>
+    <p>Reembolsos aprovados são processados em até <strong>7 dias úteis</strong>.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-container">
+    <div>
+      <div class="footer-logo">Angel Mystery</div>
+      <p>Compras seguras, confiáveis e sem estresse — do jeitinho Gudetama 😴🍳</p>
+    </div>
+    <div class="footer-column">
+      <h4>Plataforma</h4>
+      <a href="como-funciona.html">Como Funciona</a>
+      <a href="faq.html">FAQ</a>
+    </div>
+    <div class="footer-column">
+        <h4>Empresa</h4>
+        <a href="sobre.html">Sobre nós</a>
+        <a href="contato.html">Contato</a>
+    </div>
+    <div class="footer-column">
+      <h4>Legal</h4>
+      <a href="termos.html">Termos de Compra</a>
+      <a href="privacidade.html">Política de Privacidade</a>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 Angel Mystery. Todos os direitos reservados.</div>
+</footer>
+
+<script>
+  function showToast(msg) {
+    const toast = document.getElementById('angelToast');
+    toast.innerText = msg;
+    toast.style.display = 'block';
+    setTimeout(() => { toast.style.display = 'none'; }, 3000);
+  }
+
+  function toggleUserMenu() {
+    const dropdown = document.getElementById('termsDropdown');
+    if(dropdown) dropdown.classList.toggle('active');
+  }
+
+  function handleLogout(e) {
+    e.preventDefault();
+    showToast("Até mais! Indo descansar como o Gudetama... 😴🍳");
+    setTimeout(() => {
+      localStorage.removeItem('user');
+      localStorage.removeItem('adm_user');
+      localStorage.removeItem('adm_avatar');
+      localStorage.removeItem('adm_role');
+      window.location.reload();
+    }, 1500);
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    // --- LÓGICA DE LOGIN (ADMIN & USER) ---
+    const user = JSON.parse(localStorage.getItem('user'));
+    const admUser = localStorage.getItem('adm_user');
+    const admAvatar = localStorage.getItem('adm_avatar');
+    const admRole = localStorage.getItem('adm_role');
+    const authSection = document.getElementById('auth-section');
+
+    let activeUser = null;
+
+    if (admUser) {
+        activeUser = {
+            username: admUser,
+            avatar: (admAvatar && admAvatar !== 'staffs/') ? admAvatar : 'imagens/gudetama.png',
+            label: admRole ? `${admRole} 👑` : "Administrador 👑",
+            isAdm: true
+        };
+    } else if (user) {
+        activeUser = {
+            username: user.username,
+            avatar: user.avatar,
+            label: "Usuário Verificado 🍳",
+            isAdm: false
+        };
+    }
+
+    if (activeUser && authSection) {
+      authSection.innerHTML = `
+        <div class="user-profile-menu" onclick="toggleUserMenu()">
+          <img src="${activeUser.avatar}" class="user-avatar-nav">
+          <span style="font-weight: 700; font-size: 0.9rem;">${activeUser.username}</span>
+          <i class="fa-solid fa-caret-down" style="font-size: 0.8rem; color: #C9A227;"></i>
+          
+          <div class="dropdown-box" id="termsDropdown">
+            <div class="dropdown-info">
+                <span class="name">${activeUser.username}</span>
+                <span class="role">${activeUser.label}</span>
+            </div>
+            <a href="perfil.html" class="dropdown-item"><i class="fa-solid fa-star"></i> Meu Perfil</a>
+            <a href="chat.html" class="dropdown-item"><i class="fa-solid fa-box"></i> Chat Global</a>
+            
+            ${activeUser.isAdm ? `
+                <a href="painel-adm.html" class="dropdown-item" style="color: #C9A227;">
+                    <i class="fa-solid fa-crown"></i> Painel Admin
+                </a>
+            ` : ''}
+
+            <a href="#" onclick="handleLogout(event)" class="dropdown-item logout-item"><i class="fa-solid fa-egg"></i> Sair</a>
+          </div>
+        </div>
+      `;
+    }
+  });
+
+  window.onclick = function(event) {
+    if (!event.target.closest('.user-profile-menu')) {
+      const dropdown = document.getElementById('termsDropdown');
+      if (dropdown) dropdown.classList.remove('active');
+    }
+  }
+</script>
+
+</body>
+</html>

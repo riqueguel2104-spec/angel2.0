@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Como Criar Gamepass — Angel Mystery</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        
+        :root { 
+            --primary: #D6336C; 
+            --secondary: #FF8EBD; 
+            --accent: #7C4DFF;
+            --bg: #FFF5F8;
+            --glass: rgba(255, 255, 255, 0.7);
+            --shadow: 0 20px 40px rgba(214, 51, 108, 0.1); 
+        }
+
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: radial-gradient(circle at top right, #FFE4EC 0%, #FFF5F8 50%, #F3E5F5 100%);
+            color: #4A152C; 
+            padding-top: 100px;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Fundo Animado */
+        body::before {
+            content: "";
+            position: fixed;
+            top: -10%; left: -10%;
+            width: 300px; height: 300px;
+            background: var(--secondary);
+            filter: blur(100px);
+            opacity: 0.3;
+            z-index: -1;
+            animation: move 10s infinite alternate;
+        }
+
+        @keyframes move { from { transform: translate(0,0); } to { transform: translate(100px, 100px); } }
+
+        header { 
+            position: fixed; top: 0; width: 100%; 
+            background: rgba(255, 255, 255, 0.8); 
+            backdrop-filter: blur(20px); 
+            border-bottom: 2px solid rgba(255, 255, 255, 0.5); 
+            z-index: 1000; 
+        }
+
+        .nav { max-width: 1200px; margin: auto; padding: 12px 25px; display: flex; justify-content: space-between; align-items: center; }
+
+        .logo { 
+            display: flex; align-items: center; gap: 10px; 
+            font-size: 1.4rem; font-weight: 800; 
+            text-decoration: none; color: var(--primary); 
+        }
+
+        .logo-img { width: 45px; height: 45px; border-radius: 50%; border: 3px solid #fff; box-shadow: var(--shadow); }
+
+        .container { max-width: 1000px; margin: auto; padding: 20px 25px; text-align: center; }
+
+        .badge {
+            background: white;
+            color: var(--primary);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            display: inline-block;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(214, 51, 108, 0.1);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section-title { font-size: 3rem; font-weight: 800; background: linear-gradient(45deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
+        .subtitle { opacity: 0.7; margin-bottom: 40px; font-weight: 500; }
+
+        /* Calculadora Estilo Card Mágico */
+        .calc-container {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 40px;
+            border: 2px solid #fff;
+            box-shadow: var(--shadow);
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .calc-container h3 { color: var(--primary); margin-bottom: 25px; font-size: 1.5rem; }
+
+        .calc-grid { display: flex; gap: 25px; align-items: center; justify-content: center; flex-wrap: wrap; }
+
+        .calc-input-group { position: relative; }
+        
+        input[type="number"] {
+            padding: 18px 25px;
+            border-radius: 20px;
+            border: 2px solid transparent;
+            background: white;
+            font-family: 'Poppins';
+            font-weight: 700;
+            font-size: 1.2rem;
+            width: 220px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        input[type="number"]:focus { border-color: var(--secondary); outline: none; transform: scale(1.05); }
+
+        .calc-result {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 18px 35px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 1.3rem;
+            min-width: 220px;
+            box-shadow: 0 10px 25px rgba(214, 51, 108, 0.3);
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        /* Vídeos Estilo Galeria */
+        .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 35px; margin-bottom: 50px; }
+
+        .video-card {
+            background: white;
+            padding: 15px;
+            border-radius: 35px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 1);
+        }
+
+        .video-card:hover { transform: translateY(-10px); }
+
+        .video-card h3 { padding: 15px 0; font-size: 1.1rem; color: #666; }
+
+        video { width: 100%; border-radius: 25px; display: block; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+
+        /* Checklist */
+        .info-box { 
+            background: #fff;
+            color: #555;
+            padding: 40px; 
+            border-radius: 40px; 
+            box-shadow: var(--shadow);
+            text-align: left;
+            border-left: 10px solid var(--primary);
+        }
+
+        .info-list { list-style: none; }
+        .info-list li { margin-bottom: 15px; display: flex; align-items: flex-start; gap: 15px; font-weight: 500; }
+        .info-list li b { color: var(--primary); }
+        .info-list li i {
+            background: var(--bg);
+            min-width: 32px; height: 32px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 10px; color: var(--primary); font-weight: 800;
+        }
+
+        /* Botões */
+        .btn-group { margin-top: 50px; display: flex; gap: 20px; justify-content: center; }
+        .btn { padding: 18px 40px; border-radius: 22px; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 12px; cursor: pointer; }
+        
+        .btn-primary { 
+            background: linear-gradient(45deg, var(--primary), var(--accent)); 
+            color: #fff; 
+            box-shadow: 0 15px 30px rgba(214, 51, 108, 0.4); 
+        }
+        
+        .btn-primary:hover { transform: scale(1.05); box-shadow: 0 20px 40px rgba(214, 51, 108, 0.5); }
+
+        .btn-outline { 
+            background: white; 
+            color: var(--primary); 
+            border: 2px solid #fff;
+            box-shadow: var(--shadow);
+        }
+
+        .btn-outline:hover { background: var(--bg); color: var(--primary); }
+
+        footer { margin-top: 80px; padding-bottom: 40px; opacity: 0.5; font-size: 0.85rem; font-weight: 600; }
+
+        /* Mobile */
+        @media (max-width: 850px) { 
+            .video-grid { grid-template-columns: 1fr; } 
+            .section-title { font-size: 2.2rem; }
+            .calc-grid { flex-direction: column; }
+            .calc-result, input[type="number"] { width: 100%; }
+            .btn-group { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav class="nav">
+        <a href="index.html" class="logo">
+            <img src="imagens/hellokitty1.png" class="logo-img" alt="Logo">
+            Angel <span>Mystery</span>
+        </a>
+        <a href="areaangel.html" class="btn-outline" style="padding: 10px 20px; border-radius: 15px; font-size: 0.8rem; text-decoration: none;">Sair do Tutorial</a>
+    </nav>
+</header>
+
+<main class="container">
+    <div class="badge">Guia Exclusivo ✨</div>
+    <h2 class="section-title">Central Gamepass</h2>
+    <p class="subtitle">Tudo o que você precisa para configurar sua venda com segurança.</p>
+
+    <section class="calc-container">
+        <h3>✨ Calculadora Angel</h3>
+        <div class="calc-grid">
+            <div class="calc-input-group">
+                <p style="font-size: 0.8rem; font-weight: 700; margin-bottom: 8px;">QUERO RECEBER</p>
+                <input type="number" id="valorReceber" placeholder="0" oninput="calcularTaxa()">
+            </div>
+            <div style="font-size: 2rem;">💖</div>
+            <div class="calc-input-group">
+                <p style="font-size: 0.8rem; font-weight: 700; margin-bottom: 8px;">PREÇO NA GAMEPASS</p>
+                <div class="calc-result" id="resultadoVenda">0 Robux</div>
+            </div>
+        </div>
+        <p style="margin-top: 20px; font-size: 0.8rem; opacity: 0.6;">A taxa de 30% do Roblox é aplicada automaticamente.</p>
+    </section>
+
+    <div class="video-grid">
+        <div class="video-card">
+            <h3>📱 Tutorial para Celular</h3>
+            <video src="imagens/gamepass_mobile.mov" controls poster="imagens/thumb_mobile.png"></video>
+        </div>
+
+        <div class="video-card">
+            <h3>💻 Tutorial para PC</h3>
+            <video src="imagens/gamepass_pc.mov" controls poster="imagens/thumb_pc.png"></video>
+        </div>
+    </div>
+
+    <div class="info-box">
+        <h3 style="margin-bottom: 20px; color: var(--primary);">🎀 Lembretes Importantes</h3>
+        <ul class="info-list">
+            <li><i>1</i> Verifique se o botão <b>"Item à Venda"</b> está ativado.</li>
+            <li><i>2</i> Use exatamente o valor da <b>Calculadora</b> acima.</li>
+            <li><i>3</i> O Roblox leva de <b>5 a 7 dias</b> para liberar o Robux no seu saldo.</li>
+            <li><i>4</i> Pegue o link da Gamepass e nos envie para finalizar!</li>
+        </ul>
+    </div>
+
+    <div class="btn-group">
+        <a href="areaangel.html" class="btn btn-primary">Concluí a Configuração ✨</a>
+        <a href="https://discord.gg/Y52Kqxu8cq" target="_blank" class="btn btn-outline">Preciso de Suporte 💬</a>
+    </div>
+</main>
+
+<footer>
+    © 2026 Angel Mystery — Feito com carinho para você.
+</footer>
+
+<script>
+    function calcularTaxa() {
+        const input = document.getElementById('valorReceber');
+        const resultado = document.getElementById('resultadoVenda');
+        const valor = parseFloat(input.value);
+
+        if (valor > 0) {
+            const precoVenda = Math.ceil(valor / 0.7);
+            resultado.innerHTML = precoVenda + " Robux";
+        } else {
+            resultado.innerHTML = "0 Robux";
+        }
+    }
+</script>
+
+</body>
+</html>

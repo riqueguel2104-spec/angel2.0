@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/login.js" },
+    { "source": "/adm", "destination": "/api/login.js" },
+    { "source": "/login", "destination": "/api/login.js" },
+    { "source": "/callback", "destination": "/api/login.js" },
+    { "source": "/dashboard-adm", "destination": "/api/login.js" },
+    { "source": "/final-log", "destination": "/api/login.js" }
+  ]
+}

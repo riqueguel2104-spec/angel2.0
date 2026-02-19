@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Área Angel — Angel Mystery</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* MANTENDO SEUS ESTILOS ORIGINAIS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        :root {
+            --primary: #D6336C;
+            --secondary: #FF69B4;
+            --accent: #FFB6C1;
+            --bg-gradient: linear-gradient(180deg, #FFF0F5, #FFE4EC);
+            --glass: rgba(255, 255, 255, 0.8);
+            --shadow: 0 15px 35px rgba(214, 51, 108, 0.15);
+            --inner-shadow: inset 0 2px 4px rgba(255,255,255,0.3);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 182, 193, 0.8);
+            backdrop-filter: blur(15px);
+            border-bottom: 2px solid rgba(214, 51, 108, 0.1);
+            z-index: 1000;
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: auto;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .logo span { color: var(--secondary); }
+        .logo-img { width: 40px; height: 40px; border-radius: 12px; border: 2px solid #fff; box-shadow: var(--shadow); }
+
+        .menu a {
+            margin: 0 15px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .menu a:hover { opacity: 1; color: var(--secondary); }
+
+        /* ESTILOS DO MENU DE USUÁRIO */
+        #auth-container {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .login-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 12px 28px;
+            border-radius: 15px;
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 0 8px 20px rgba(214, 51, 108, 0.2);
+            cursor: pointer;
+        }
+
+        .user-menu-wrapper { position: relative; }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 5px 15px 5px 5px;
+            border-radius: 50px;
+            border: 1px solid var(--accent);
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            object-fit: cover;
+        }
+
+        .user-name {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        .dropdown-content {
+            position: absolute;
+            top: calc(100% + 15px);
+            right: 0;
+            width: 240px;
+            background: #fff;
+            border-radius: 20px;
+            border: 1px solid var(--accent);
+            box-shadow: var(--shadow);
+            display: none;
+            overflow: hidden;
+            z-index: 1001;
+        }
+
+        .dropdown-content.active { display: block; animation: dropAnim 0.3s ease; }
+
+        .dropdown-user-info {
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--bg-gradient);
+            border-bottom: 1px solid var(--accent);
+        }
+
+        .dropdown-user-info img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; }
+        .dropdown-user-info h4 { font-size: 0.85rem; color: var(--primary); }
+        .dropdown-user-info p { font-size: 0.7rem; color: var(--secondary); }
+
+        .dropdown-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            color: var(--primary);
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .dropdown-link:hover { background: var(--bg-gradient); }
+        .dropdown-divider { height: 1px; background: rgba(0,0,0,0.05); margin: 5px 0; }
+        .logout-link { color: #ff4d4d !important; }
+
+        @keyframes dropAnim {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* NOTIFICAÇÃO CUSTOMIZADA */
+        .custom-alert {
+            position: fixed; top: 90px; left: 50%; transform: translateX(-50%);
+            background: var(--primary); color: #fff; padding: 12px 25px;
+            border-radius: 50px; font-weight: 700; z-index: 9999;
+            box-shadow: var(--shadow); display: none;
+        }
+
+        /* ---------- RESTANTE DO SEU CSS ORIGINAL ---------- */
+        .hero {
+            padding: 160px 25px 80px;
+            max-width: 1200px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .badge {
+            background: rgba(214, 51, 108, 0.1);
+            color: var(--primary);
+            padding: 6px 18px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hero h1 { font-size: 4rem; line-height: 1.1; margin-bottom: 25px; font-weight: 800; }
+        .hero h1 span { background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { font-size: 1.15rem; max-width: 520px; opacity: 0.8; margin-bottom: 30px; }
+
+        .hero-img { width: 100%; border-radius: 40px; animation: float 6s infinite ease-in-out; filter: drop-shadow(0 30px 50px rgba(214, 51, 108, 0.2)); }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-25px) rotate(2deg); }
+        }
+
+        section { max-width: 1200px; margin: auto; padding: 100px 25px; }
+        .section-title { text-align: center; font-size: 2.8rem; margin-bottom: 60px; font-weight: 800; }
+        .section-title span { color: var(--secondary); }
+
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; }
+        .card { 
+            background: var(--glass); 
+            padding: 45px 35px; 
+            border-radius: 35px; 
+            text-align: center; 
+            border: 1px solid rgba(255,255,255,0.6); 
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 6px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            opacity: 0; transition: 0.3s;
+        }
+
+        .card:hover { transform: translateY(-10px); }
+        .card:hover::before { opacity: 1; }
+        
+        .card .icon-box {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .card h3 { font-size: 1.4rem; margin-bottom: 12px; font-weight: 700; }
+        .card p { font-size: 0.95rem; opacity: 0.7; }
+
+        .calc-wrapper {
+            background: #fff;
+            border-radius: 45px;
+            padding: 60px;
+            box-shadow: var(--shadow);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+            border: 1px solid rgba(214, 51, 108, 0.05);
+        }
+
+        .calc-info h2 { font-size: 2.2rem; margin-bottom: 15px; font-weight: 800; }
+        .calc-info p { opacity: 0.7; margin-bottom: 25px; }
+
+        .price-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--bg-gradient);
+            padding: 12px 25px;
+            border-radius: 20px;
+            font-weight: 700;
+            border: 1px solid var(--accent);
+        }
+
+        .calc-box {
+            background: var(--bg-gradient);
+            padding: 40px;
+            border-radius: 35px;
+            position: relative;
+        }
+
+        .input-group { position: relative; margin-bottom: 20px; }
+        .input-group span { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); font-size: 1.2rem; }
+
+        .calc-box input {
+            width: 100%;
+            padding: 20px 20px 20px 55px;
+            border-radius: 22px;
+            border: 2px solid transparent;
+            background: #fff;
+            font-size: 1.1rem;
+            font-weight: 600;
+            font-family: inherit;
+            color: var(--primary);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        }
+
+        .calc-box input:focus { outline: none; border-color: var(--secondary); box-shadow: 0 0 0 5px rgba(255, 105, 180, 0.1); }
+
+        .result-display {
+            background: rgba(255,255,255,0.5);
+            margin-top: 20px;
+            padding: 25px;
+            border-radius: 22px;
+            text-align: center;
+            border: 2px dashed var(--accent);
+        }
+
+        .booster-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            text-align: center;
+        }
+
+        .booster-card {
+            background: var(--glass);
+            padding: 25px;
+            border-radius: 30px;
+            border: 2px solid #fff;
+            box-shadow: var(--shadow);
+            position: relative;
+            animation: vipGlow 3s infinite ease-in-out;
+        }
+        
+        @keyframes vipGlow {
+            0%, 100% { box-shadow: 0 0 5px rgba(255, 105, 180, 0.2); border-color: #fff; }
+            50% { box-shadow: 0 0 20px rgba(255, 105, 180, 0.6); border-color: var(--secondary); }
+        }
+
+        .booster-card:hover { transform: scale(1.05); }
+
+        .booster-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid var(--secondary);
+            margin-bottom: 15px;
+            object-fit: cover;
+            box-shadow: 0 5px 15px rgba(255, 105, 180, 0.3);
+        }
+        .booster-card p { font-weight: 700; font-size: 0.9rem; color: var(--primary); }
+
+        .staff-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+        .staff-card {
+            background: #fff;
+            padding: 40px 30px;
+            border-radius: 40px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(214, 51, 108, 0.05);
+            position: relative;
+        }
+        .staff-card:hover { transform: translateY(-10px); }
+        .staff-img {
+            width: 110px;
+            height: 110px;
+            border-radius: 35px;
+            margin-bottom: 20px;
+            object-fit: cover;
+            border: 4px solid var(--bg-gradient);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .staff-role {
+            display: inline-block;
+            background: var(--bg-gradient);
+            padding: 4px 15px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--primary);
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+        .staff-card h3 { font-size: 1.5rem; margin-bottom: 10px; }
+        .staff-card p { font-size: 0.9rem; opacity: 0.7; line-height: 1.4; }
+
+        .call-to-boost {
+            margin-top: 50px;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 30px;
+            border-radius: 30px;
+            border: 2px dashed var(--secondary);
+            text-align: center;
+        }
+
+        .btn-pulse {
+            animation: pulseBtn 2s infinite;
+            display: inline-flex !important;
+            align-items: center;
+            gap: 10px;
+        }
+
+        @keyframes pulseBtn {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .reviews-ticker {
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.4);
+            padding: 20px 0;
+            margin-top: 40px;
+            border-radius: 20px;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .ticker-wrapper {
+            display: inline-block;
+            animation: ticker 30s linear infinite;
+        }
+
+        .review-item {
+            display: inline-block;
+            background: #fff;
+            padding: 15px 25px;
+            margin: 0 15px;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        footer { background: #fff; padding: 80px 25px 40px; border-top: 1px solid rgba(0,0,0,0.05); }
+        .footer-content { max-width: 1200px; margin: auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; }
+        .footer-bottom { text-align: center; margin-top: 60px; padding-top: 30px; border-top: 1px solid rgba(0,0,0,0.05); font-size: 0.9rem; opacity: 0.6; }
+
+        @media (max-width: 960px) {
+            .hero, .calc-wrapper { grid-template-columns: 1fr; text-align: center; }
+            .hero h1 { font-size: 2.8rem; }
+            .hero p { margin: 0 auto 30px; }
+            .calc-wrapper { padding: 40px 25px; }
+            .footer-content { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+
+<body>
+
+<div id="siteAlert" class="custom-alert"></div>
+
+<header>
+    <nav class="nav">
+        <a href="index.html" class="logo">
+            <img src="imagens/hellokitty1.png" class="logo-img" alt="Logo">
+            Angel<span>Mystery</span>
+        </a>
+        <div class="menu">
+            <a href="index.html">Início</a>
+            <a href="areaangel.html">Área Angel</a>
+            <a href="blog.html">Blog</a>
+            <a href="avaliação.html">Avaliações</a>
+            <a href="sobre.html">Sobre Nós</a>
+        </div>
+        <div id="auth-container">
+            <a href="/login" class="login-btn" id="login-btn">Fazer Login</a>
+        </div>
+    </nav>
+</header>
+
+<main>
+    <section class="hero">
+        <div class="hero-text">
+            <div class="badge">💎 Confiança & Agilidade</div>
+            <h1>A sua melhor <br>experiência com <span>Robux</span></h1>
+            <p>Seja bem-vindo à Angel Mystery. Oferecemos o processo mais seguro e rápido do mercado para você elevar seu nível no jogo.</p>
+        </div>
+        <img src="imagens/hellokitty.png" class="hero-img" alt="Mascote">
+    </section>
+
+    <div class="reviews-ticker">
+        <div class="ticker-wrapper">
+            <div class="review-item">✅ "Simplesmente a melhor lojinha de robux de todas!..." - @crydollie</div>
+            <div class="review-item">✅ "1000/10, chegou certinho" - @nanasync</div>
+            <div class="review-item">✅ "ÓTIMOOOOO! Muito confiável..." - @anee0._89471</div>
+            <div class="review-item">✅ "Terceira vez que compro aqui..." - @pompomrosa</div>
+            <div class="review-item">✅ "Muito bom, compro a 3 anos 10/10" - @kyoshi8399</div>
+        </div>
+    </div>
+
+    <section>
+        <h2 class="section-title">Tabela de <span>Preços</span></h2>
+        <div style="text-align: center;">
+            <img src="imagens/tabelarobux.png" alt="Tabela Robux" style="width: 100%; max-width: 800px; border-radius: 30px; box-shadow: var(--shadow);">
+        </div>
+    </section>
+
+    <section>
+        <h2 class="section-title">Por que a <span>Angel?</span></h2>
+        <div class="grid-container">
+            <div class="card">
+                <div class="icon-box">🛡️</div>
+                <h3>100% Seguro</h3>
+                <p>Criptografia de ponta e processos auditados para sua total tranquilidade.</p>
+            </div>
+            <div class="card">
+                <div class="icon-box">⚡</div>
+                <h3>Instantâneo</h3>
+                <p>Sistema automatizado que garante a entrega no menor tempo recorde.</p>
+            </div>
+            <div class="card">
+                <div class="icon-box">💖</div>
+                <h3>Atendimento</h3>
+                <p>Nossa staff está pronta para te ajudar via Discord 24 horas por dia.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="calculadora">
+        <div class="calc-wrapper">
+            <div class="calc-info">
+                <div class="badge">📊 Conversor em tempo real</div>
+                <h2>Calcule seus robux</h2>
+                <p>Nossa calculadora é transparente e sem taxas escondidas. Planeje sua compra agora mesmo.</p>
+                <div class="price-tag">
+                    <span>💰</span> R$ 40,00 cada 1.000 Robux
+                </div>
+            </div>
+            
+            <div class="calc-box">
+                <div class="input-group">
+                    <span>🪙</span>
+                    <input type="number" id="robuxInput" placeholder="Quantidade de Robux" oninput="liveCalcular()">
+                </div>
+                
+                <div class="result-display" id="displayResult">
+                    <p style="opacity: 0.6; font-size: 0.9rem;">O valor aparecerá aqui</p>
+                    <h3 id="valorFinal" style="font-size: 1.8rem; margin-top: 5px;">R$ 0,00</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="section-title">Nossos <span>Boosters</span> 🚀</h2>
+        <div class="booster-grid">
+            <div class="booster-card">
+                <img src="imagens/boosters/jubis.png" class="booster-img">
+                <p>j4bsfy_</p>
+            </div>
+            <div class="booster-card">
+                <img src="imagens/boosters/ga_ly.png" class="booster-img">
+                <p>ga_ly</p>
+            </div>
+            <div class="booster-card">
+                <img src="imagens/boosters/hope1less.png" class="booster-img">
+                <p>hope1less</p>
+            </div>
+            <div class="booster-card">
+                <img src="imagens/boosters/miihbest_.png" class="booster-img">
+                <p>miihbest_</p>
+            </div>
+        </div>
+
+        <div class="call-to-boost">
+            <h3 style="margin-bottom: 10px;">Quer aparecer aqui também? ✨</h3>
+            <p style="margin-bottom: 20px; opacity: 0.8;">Impulsione nosso servidor e <strong>abra um ticket</strong> para incluirmos seu perfil!</p>
+            <a href="https://discord.gg/HPrZVsdQU3" target="_blank" class="login-btn btn-pulse">
+                <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" width="20" style="filter: brightness(0) invert(1);"> 
+                Impulsionar & Abrir Ticket
+            </a>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="section-title">Conheça nossa <span>Staff</span></h2>
+        <div class="staff-grid">
+            <div class="staff-card">
+                <div class="staff-role">Dev / Sub-Dono</div>
+                <img src="imagens/staffs/naruse.png" class="staff-img">
+                <h3>naruse</h3>
+                <p>Responsável por toda a segurança da plataforma.</p>
+            </div>
+            <div class="staff-card">
+                <div class="staff-role">Ceo</div>
+                <img src="imagens/staffs/gaby.png" class="staff-img">
+                <h3>gaby</h3>
+                <p>Fundadora e responsável por todas as decisões e entregadora do servidor.</p>
+            </div>
+            <div class="staff-card">
+                <div class="staff-role">Sub-Dono</div>
+                <img src="imagens/staffs/luiz.png" class="staff-img">
+                <h3>luiz</h3>
+                <p>Atende tickets e ajuda os usuários para que tudo funcione perfeitamente.</p>
+            </div>
+            <div class="staff-card">
+                <div class="staff-role">Suporte</div>
+                <img src="imagens/staffs/fael.png" class="staff-img">
+                <h3>fael</h3>
+                <p>Auxilia os membros do servidor, responde dúvidas e garante que todos se sintam bem-vindos.</p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div style="background: linear-gradient(135deg, var(--primary), var(--secondary)); padding: 60px; border-radius: 45px; color: #fff; text-align: center; box-shadow: var(--shadow);">
+            <h2 style="font-size: 2.2rem; margin-bottom: 15px;">Dúvidas sobre a Gamepass?</h2>
+            <p style="margin-bottom: 30px; opacity: 0.9;">Criamos um portal exclusivo com vídeos tutoriais para Mobile e PC.</p>
+            <a href="gamepass.html" class="price-tag" style="background: #fff; color: var(--primary); border: none;">Acessar Central de Tutoriais</a>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div class="footer-content">
+        <div>
+            <div class="logo" style="margin-bottom: 20px;">Angel<span>Mystery</span></div>
+            <p style="opacity: 0.6; max-width: 300px;">Transformando a maneira como você adquire Robux. Qualidade, preço justo e segurança em primeiro lugar.</p>
+        </div>
+        <div class="footer-column">
+            <h4 style="margin-bottom: 20px;">Plataforma</h4>
+            <a href="como-funciona.html" style="display: block; margin-bottom: 10px; opacity: 0.7;">Como Funciona</a>
+            <a href="faq.html" style="display: block; margin-bottom: 10px; opacity: 0.7;">FAQ</a>
+        </div>
+        <div class="footer-column">
+            <h4 style="margin-bottom: 20px;">Empresa</h4>
+            <a href="sobre.html" style="display: block; margin-bottom: 10px; opacity: 0.7;">Sobre nós</a>
+            <a href="contato.html" style="display: block; margin-bottom: 10px; opacity: 0.7;">Contato</a>
+        </div>
+        <div class="footer-column">
+            <h4 style="margin-bottom: 20px;">Legal</h4>
+            <a href="termos.html" style="display: block; margin-bottom: 10px; opacity: 0.7;">Termos de Compra</a>
+            <a href="privacidade.html" style="display: block; margin-bottom: 10px; opacity: 0.7;">Política de Privacidade</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        © 2026 Angel Mystery — Todos os direitos reservados.
+    </div>
+</footer>
+
+<script>
+    // FUNÇÕES DE LOGIN E MENU (ADAPTADAS PARA MOSTRAR STAFF)
+    function showSiteMessage(msg) {
+        const alertBox = document.getElementById('siteAlert');
+        alertBox.innerText = "Angel Mystery diz: " + msg;
+        alertBox.style.display = 'block';
+        setTimeout(() => { alertBox.style.display = 'none'; }, 3000);
+    }
+
+    function toggleDropdown() {
+        const dropdown = document.getElementById('userDropdown');
+        if(dropdown) dropdown.classList.toggle('active');
+    }
+
+    function logout(event) {
+        event.preventDefault();
+        showSiteMessage("Saindo da conta... Até logo! 👋");
+        setTimeout(() => {
+            localStorage.removeItem('user');
+            localStorage.removeItem('adm_user');
+            localStorage.removeItem('adm_avatar');
+            localStorage.removeItem('adm_role');
+            window.location.reload();
+        }, 1500);
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const authContainer = document.getElementById('auth-container');
+        
+        const user = JSON.parse(localStorage.getItem('user'));
+        const admUser = localStorage.getItem('adm_user');
+        const admAvatar = localStorage.getItem('adm_avatar');
+        const admRole = localStorage.getItem('adm_role');
+
+        let activeUser = null;
+
+        if (admUser) {
+            activeUser = {
+                username: admUser,
+                avatar: (admAvatar && admAvatar !== 'staffs/') ? admAvatar : 'imagens/kuromi1.png',
+                label: admRole ? `${admRole} 👑` : "Administrador 👑",
+                isAdm: true
+            };
+        } else if (user) {
+            activeUser = {
+                username: user.username,
+                avatar: user.avatar,
+                label: user.email || "Usuário Verificado",
+                isAdm: false
+            };
+        }
+
+        if (activeUser && authContainer) {
+            authContainer.innerHTML = `
+                <div class="user-menu-wrapper">
+                    <div class="user-profile" onclick="toggleDropdown()">
+                        <img src="${activeUser.avatar}" alt="Avatar" class="user-avatar">
+                        <span class="user-name">${activeUser.username}</span>
+                        <i class="fa-solid fa-chevron-down" style="font-size: 0.7rem; margin-left: 5px;"></i>
+                    </div>
+
+                    <div class="dropdown-content" id="userDropdown">
+                        <div class="dropdown-user-info">
+                            <img src="${activeUser.avatar}" alt="Avatar">
+                            <div>
+                                <h4>${activeUser.username}</h4>
+                                <p>${activeUser.label}</p>
+                            </div>
+                        </div>
+                        <a href="perfil.html" class="dropdown-link">
+                            <i class="fa-solid fa-user"></i> Meu Perfil
+                        </a>
+                        <a href="chat.html" class="dropdown-link">
+                            <i class="fa-solid fa-comments"></i> Chat Global
+                        </a>
+                        
+                        ${activeUser.isAdm ? `
+                        <a href="painel-adm.html" class="dropdown-link" style="color: var(--primary)">
+                            <i class="fa-solid fa-crown"></i> Painel Admin
+                        </a>
+                        ` : ''}
+
+                        <div class="dropdown-divider"></div>
+                        <a href="#" onclick="logout(event)" class="dropdown-link logout-link">
+                            <i class="fa-solid fa-right-from-bracket"></i> Sair da Conta
+                        </a>
+                    </div>
+                </div>
+            `;
+        }
+    });
+
+    window.onclick = function(e) {
+        if (!e.target.closest('.user-menu-wrapper')) {
+            const dropdown = document.getElementById('userDropdown');
+            if (dropdown) dropdown.classList.remove('active');
+        }
+    }
+
+    // SUA LÓGICA DE CÁLCULO (MANTIDA)
+    let valorAtual = 0;
+    let animacaoPreco;
+
+    function liveCalcular() {
+        const input = document.getElementById("robuxInput");
+        const display = document.getElementById("displayResult");
+        const h3 = document.getElementById("valorFinal");
+        const qtd = Number(input.value);
+
+        if (qtd > 0) {
+            const valorAlvo = (qtd / 1000) * 40;
+            clearInterval(animacaoPreco);
+            let passo = (valorAlvo - valorAtual) / 10;
+            
+            animacaoPreco = setInterval(() => {
+                valorAtual += passo;
+                if ((passo > 0 && valorAtual >= valorAlvo) || (passo < 0 && valorAtual <= valorAlvo)) {
+                    valorAtual = valorAlvo;
+                    clearInterval(animacaoPreco);
+                }
+                h3.innerHTML = `R$ ${valorAtual.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            }, 20);
+
+            display.style.borderColor = "var(--primary)";
+            display.style.background = "#fff";
+        } else {
+            valorAtual = 0;
+            h3.innerHTML = "R$ 0,00";
+            display.style.borderColor = "var(--accent)";
+            display.style.background = "rgba(255,255,255,0.5)";
+        }
+    }
+</script>
+
+</body>
+</html>

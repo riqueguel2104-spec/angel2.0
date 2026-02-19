@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Como Funciona — Angel Mystery</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Poppins', sans-serif; background: #FFF4D1; color: #4B3621; overflow-x: hidden; }
+
+    a { transition: all 0.3s ease; text-decoration: none; color: inherit; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-15px);} 60% {transform: translateY(-7px);} }
+
+    /* ===== HEADER ===== */
+    header {
+      position: fixed; top: 0; width: 100%;
+      background: #F6D04D; border-bottom: 3px solid #A9745B;
+      z-index: 1000; animation: fadeUp 1s ease forwards;
+    }
+
+    .nav { max-width: 1200px; margin: auto; padding: 15px 25px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 2rem; color: #A9745B; }
+    .logo span { color: #F6A623; }
+    .logo-img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
+
+    .menu a { margin: 0 15px; font-weight: 600; color: #4B3621; }
+    .menu a:hover { color: #F6A623; }
+
+    /* MENU DE USUÁRIO (POMPOMPURIN STYLE) */
+    .auth-wrapper { display: flex; align-items: center; }
+
+    .login-btn { 
+        background: #A9745B; 
+        padding: 10px 25px; 
+        border-radius: 30px; 
+        color: #FFF4D1; 
+        font-weight: 600; 
+        transition: transform 0.3s ease; 
+    }
+    .login-btn:hover { transform: scale(1.05); }
+
+    .user-profile-menu {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #FFF;
+      padding: 5px 15px 5px 5px;
+      border-radius: 50px;
+      border: 1px solid #A9745B;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .user-avatar-nav {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      border: 2px solid #F6A623;
+      object-fit: cover;
+    }
+
+    .dropdown-box {
+      position: absolute;
+      top: 55px;
+      right: 0;
+      width: 240px;
+      background: #FFF;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(169,116,91,0.2);
+      border: 1px solid #F6D04D;
+      display: none;
+      overflow: hidden;
+      z-index: 1100;
+    }
+
+    .dropdown-box.active { display: block; animation: fadeUp 0.3s ease; }
+
+    .dropdown-info {
+        padding: 15px;
+        background: #FFF4D1;
+        border-bottom: 1px solid #F6D04D;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .dropdown-info span.name { font-weight: 700; font-size: 0.9rem; color: #4B3621; }
+    .dropdown-info span.role { font-size: 0.75rem; color: #A9745B; font-weight: 600; }
+
+    .dropdown-item {
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      color: #4B3621;
+      font-weight: 600;
+    }
+
+    .dropdown-item:hover { background: #FFF4D1; color: #A9745B; }
+    
+    .logout-item { color: #d9534f !important; border-top: 1px solid #eee; }
+
+    .angel-toast {
+      position: fixed; top: 85px; left: 50%; transform: translateX(-50%);
+      background: #A9745B; color: #FFF4D1; padding: 10px 20px;
+      border-radius: 50px; font-weight: 600; z-index: 2000; display: none;
+    }
+
+    /* ===== HERO ===== */
+    .hero { min-height: 80vh; padding-top: 120px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 1200px; margin: auto; padding-inline: 25px; animation: fadeUp 1.2s ease; }
+    .badge { background: #F6A623; padding: 12px 26px; border-radius: 30px; color: #FFF4D1; font-weight: 700; margin-bottom: 20px; display: inline-block; }
+    .hero h1 { font-size: 3rem; margin-bottom: 25px; line-height: 1.1; max-width: 600px; }
+    .hero h1 span { color: #A9745B; }
+    .hero p { color: #4B3621; max-width: 580px; line-height: 1.7; margin-bottom: 40px; }
+
+    .hero-buttons { display: flex; gap: 20px; flex-wrap: wrap; }
+    .btn-primary { background: #F6A623; color: #FFF4D1; padding: 20px 48px; border-radius: 60px; font-weight: 700; cursor: pointer; font-size: 1rem; transition: all 0.3s ease; border: none; }
+    .btn-primary:hover { transform: scale(1.05); box-shadow: 0 10px 25px rgba(166,116,91,0.4); }
+
+    .hero-gif { width: 100%; max-width: 380px; animation: bounce 2s infinite; }
+
+    /* ===== PASSOS ===== */
+    .steps { padding: 80px 25px; max-width: 1200px; margin: auto; }
+    .step { background: #FFF; padding: 30px 25px; border-radius: 20px; margin-bottom: 20px; position: relative; border-left: 6px solid #F6A623; box-shadow: 0 10px 20px rgba(166,116,91,0.1); }
+    .step-number { position: absolute; left: -20px; top: 20px; width: 40px; height: 40px; background: #A9745B; color: #FFF4D1; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.2rem; }
+    .step h3 { font-size: 1.4rem; margin-bottom: 8px; color: #A9745B; padding-left: 10px; }
+    .step p { color: #4B3621; line-height: 1.6; padding-left: 10px; }
+
+    /* ===== TIMELINE ===== */
+    .timeline { padding: 50px 25px; max-width: 800px; margin: auto; }
+    .timeline-item { margin-bottom: 25px; padding-left: 20px; border-left: 3px solid #F6A623; position: relative; }
+    .timeline-item::before { content: ''; position: absolute; left: -8px; top: 0; width: 14px; height: 14px; background: #F6A623; border-radius: 50%; border: 2px solid #A9745B; }
+    .timeline-item h4 { color: #A9745B; margin-bottom: 5px; }
+    .timeline-item p { color: #4B3621; line-height: 1.6; }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: #F6D04D; 
+      padding: 80px 25px 40px;
+      border-top: 3px solid #A9745B;
+      color: #4B3621;
+      border-radius: 20px 20px 0 0;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 50px;
+    }
+
+    .footer-logo { font-size: 2rem; font-weight: 700; color: #A9745B; margin-bottom: 15px; }
+    .footer-column h4 { color: #A9745B; margin-bottom: 15px; font-weight: 600; }
+    .footer-column a { display: block; margin-bottom: 10px; color: #4B3621; transition: color 0.3s ease; }
+    .footer-column a:hover { color: #F6A623; padding-left: 5px; }
+
+    .footer-bottom { margin-top: 40px; text-align: center; color: #4B3621; font-size: 0.85rem; }
+
+    @media (max-width: 900px) { 
+        .hero { grid-template-columns: 1fr; text-align: center; } 
+        .hero-buttons { justify-content: center; }
+        .footer-container { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="angelToast" class="angel-toast"></div>
+
+<header>
+  <div class="nav">
+    <a href="index.html" class="logo">
+      <img src="imagens/pompompurin.png" class="logo-img">
+      Angel <span>Mystery</span>
+    </a>
+    <div class="menu">
+      <a href="index.html">Início</a>
+      <a href="areaangel.html">Área Angel</a>
+      <a href="blog.html">Blog</a>
+      <a href="avaliação.html">Avaliações</a>
+      <a href="sobre.html">Sobre Nós</a>
+    </div>
+
+    <div id="auth-section" class="auth-wrapper">
+      <a href="/login" class="login-btn" id="login-btn">Fazer Login</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div>
+    <div class="badge">༯ Como Funciona</div>
+    <h1>Veja como comprar <span>Robux</span> de forma segura</h1>
+    <p>Após o envio do comprovante, nossa equipe verifica o pagamento e entrega os Robux em até 72 horas, garantindo uma experiência segura e tranquila para sua conta Roblox.</p>
+    <div class="hero-buttons">
+      <button class="btn-primary" onclick="window.location.href='areaangel.html'">Ir para Área Angel</button>
+    </div>
+  </div>
+  <img src="imagens/pompompurin1.png" class="hero-gif">
+</section>
+
+<section class="steps">
+  <div class="step">
+    <div class="step-number">1</div>
+    <h3>Escolha o Produto</h3>
+    <p>Selecione o pacote de Robux que deseja adquirir, via grupo ou Gamepass.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-number">2</div>
+    <h3>Envie o Comprovante</h3>
+    <p>Após efetuar o pagamento, envie o comprovante. Nossa equipe irá verificar e aprovar manualmente.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-number">3</div>
+    <h3>Receba em Até 72h</h3>
+    <p>Após a confirmação do pagamento pelo staff, os Robux são entregues em até 72 horas, diretamente na sua conta Roblox.</p>
+  </div>
+</section>
+
+<section class="timeline">
+  <div class="timeline-item">
+    <h4>Comprovante Recebido</h4>
+    <p>Você envia o comprovante para nossa equipe para verificação.</p>
+  </div>
+  <div class="timeline-item">
+    <h4>Pagamento Confirmado</h4>
+    <p>O staff verifica e aprova manualmente seu pagamento.</p>
+  </div>
+  <div class="timeline-item">
+    <h4>Entrega Realizada</h4>
+    <p>Os Robux são entregues em até 72 horas diretamente na sua conta.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-container">
+    <div>
+      <div class="footer-logo">Angel Mystery</div>
+      <p>O site mais seguro para suas compras de Robux, com entrega confiável em até 72 horas.</p>
+    </div>
+
+    <div class="footer-column">
+      <h4>Plataforma</h4>
+      <a href="como-funciona.html">Como Funciona</a>
+      <a href="faq.html">FAQ</a>
+    </div>
+
+    <div class="footer-column">
+      <h4>Empresa</h4>
+      <a href="sobre.html">Sobre Nós</a>
+      <a href="contato.html">Contato</a>
+    </div>
+
+    <div class="footer-column">
+      <h4>Legal</h4>
+      <a href="termos.html">Termos de Compra</a>
+      <a href="privacidade.html">Política de Privacidade</a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    © 2026 Angel Mystery. Todos os direitos reservados.
+  </div>
+</footer>
+
+<script>
+  function showToast(msg) {
+    const toast = document.getElementById('angelToast');
+    toast.innerText = msg;
+    toast.style.display = 'block';
+    setTimeout(() => { toast.style.display = 'none'; }, 3000);
+  }
+
+  function toggleUserMenu() {
+    const dropdown = document.getElementById('pompomDropdown');
+    if(dropdown) dropdown.classList.toggle('active');
+  }
+
+  function handleLogout(e) {
+    e.preventDefault();
+    showToast("Até logo! O Pompompurin guardará seu lugar... 🍮");
+    setTimeout(() => {
+      localStorage.removeItem('user');
+      localStorage.removeItem('adm_user');
+      localStorage.removeItem('adm_avatar');
+      localStorage.removeItem('adm_role');
+      window.location.reload();
+    }, 1500);
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    // --- LÓGICA DE LOGIN (ADMIN & USER) ---
+    const user = JSON.parse(localStorage.getItem('user'));
+    const admUser = localStorage.getItem('adm_user');
+    const admAvatar = localStorage.getItem('adm_avatar');
+    const admRole = localStorage.getItem('adm_role');
+    const authSection = document.getElementById('auth-section');
+
+    let activeUser = null;
+
+    if (admUser) {
+        activeUser = {
+            username: admUser,
+            avatar: (admAvatar && admAvatar !== 'staffs/') ? admAvatar : 'imagens/pompompurin.png',
+            label: admRole ? `${admRole} 👑` : "Administrador 👑",
+            isAdm: true
+        };
+    } else if (user) {
+        activeUser = {
+            username: user.username,
+            avatar: user.avatar,
+            label: "Usuário Verificado 🍮",
+            isAdm: false
+        };
+    }
+
+    if (activeUser && authSection) {
+      authSection.innerHTML = `
+        <div class="user-profile-menu" onclick="toggleUserMenu()">
+          <img src="${activeUser.avatar}" class="user-avatar-nav">
+          <span style="font-weight: 600; font-size: 0.9rem; color: #4B3621;">${activeUser.username}</span>
+          <i class="fa-solid fa-caret-down" style="font-size: 0.8rem; color: #A9745B;"></i>
+          
+          <div class="dropdown-box" id="pompomDropdown">
+            <div class="dropdown-info">
+                <span class="name">${activeUser.username}</span>
+                <span class="role">${activeUser.label}</span>
+            </div>
+            <a href="perfil.html" class="dropdown-item"><i class="fa-solid fa-comment-dots"></i> Meu Perfil</a>
+            <a href="chat.html" class="dropdown-item"><i class="fa-solid fa-mug-hot"></i> Chat Global</a>
+            
+            ${activeUser.isAdm ? `
+                <a href="painel-adm.html" class="dropdown-item" style="color: #A9745B;">
+                    <i class="fa-solid fa-crown"></i> Painel Admin
+                </a>
+            ` : ''}
+
+            <a href="#" onclick="handleLogout(event)" class="dropdown-item logout-item"><i class="fa-solid fa-person-walking-arrow-right"></i> Sair</a>
+          </div>
+        </div>
+      `;
+    }
+  });
+
+  window.onclick = function(event) {
+    if (!event.target.closest('.user-profile-menu')) {
+      const dropdown = document.getElementById('pompomDropdown');
+      if (dropdown) dropdown.classList.remove('active');
+    }
+  }
+</script>
+
+</body>
+</html>

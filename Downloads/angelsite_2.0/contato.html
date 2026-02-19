@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Contato — Angel Mystery</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --primary: #00ACC1;
+      --primary-light: #00BCD4;
+      --bg-light: #E0F7FA;
+      --header-bg: #B2EBF2;
+      --text-dark: #1A1A1A;
+      --white: #ffffff;
+      --shadow: 0 10px 30px rgba(0, 172, 193, 0.15);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body { 
+      font-family: 'Poppins', sans-serif; 
+      background: linear-gradient(135deg, #E0F7FA 0%, #B2EBF2 100%); 
+      color: var(--text-dark); 
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    a { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); text-decoration: none; color: inherit; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes bounce { 0%, 100% {transform: translateY(0);} 50% {transform: translateY(-20px);} }
+
+    /* ===== HEADER ===== */
+    header {
+      position: fixed; top: 0; width: 100%;
+      background: rgba(178, 235, 242, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 3px solid var(--primary);
+      z-index: 1000; animation: fadeDown 0.8s ease;
+    }
+
+    @keyframes fadeDown { from { opacity: 0; transform: translateY(-100%); } to { opacity: 1; transform: translateY(0); } }
+
+    .nav { max-width: 1200px; margin: auto; padding: 12px 25px; display: flex; align-items: center; justify-content: space-between; }
+    
+    .logo { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 1.8rem; color: var(--primary); }
+    .logo span { color: var(--primary-light); }
+    .logo-img { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
+
+    .menu { display: flex; align-items: center; }
+    .menu a { margin: 0 12px; font-weight: 600; font-size: 0.95rem; position: relative; }
+    .menu a::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background: var(--primary-light); transition: 0.3s; }
+    .menu a:hover::after { width: 100%; }
+    .menu a:hover { color: var(--primary-light); }
+
+    /* ESTILOS DO MENU DE USUÁRIO */
+    .auth-wrapper { display: flex; align-items: center; margin-left: 15px; }
+
+    .login-btn { 
+      background: var(--primary); 
+      padding: 10px 22px; 
+      border-radius: 50px; 
+      color: #fff; 
+      font-weight: 600; 
+      box-shadow: 0 4px 15px rgba(0, 172, 193, 0.3);
+    }
+    .login-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 172, 193, 0.4); background: var(--primary-light); }
+
+    .user-profile-menu {
+      display: flex; align-items: center; gap: 10px; background: var(--white);
+      padding: 6px 15px 6px 6px; border-radius: 50px;
+      border: 2px solid var(--primary-light); cursor: pointer; position: relative;
+      transition: 0.3s;
+    }
+    .user-profile-menu:hover { background: #f0fdff; }
+
+    .user-avatar-nav { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
+
+    .dropdown-box {
+      position: absolute; top: 60px; right: 0; width: 240px;
+      background: var(--white); border-radius: 18px;
+      box-shadow: var(--shadow); border: 1px solid var(--header-bg);
+      display: none; overflow: hidden; z-index: 1100;
+    }
+
+    .dropdown-box.active { display: block; animation: fadeUp 0.3s ease; }
+
+    .dropdown-info { padding: 15px; background: #f8ffff; border-bottom: 1px solid var(--header-bg); }
+    .dropdown-info span.name { display: block; font-weight: 700; color: var(--text-dark); }
+    .dropdown-info span.role { font-size: 0.7rem; color: var(--primary); font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .dropdown-item { padding: 12px 20px; display: flex; align-items: center; gap: 12px; font-size: 0.9rem; font-weight: 500; }
+    .dropdown-item:hover { background: var(--bg-light); color: var(--primary); }
+    .logout-item { color: #ff5c5c !important; border-top: 1px solid #f0f0f0; }
+
+    .angel-toast {
+      position: fixed; top: 90px; left: 50%; transform: translateX(-50%);
+      background: var(--primary); color: #fff; padding: 12px 25px;
+      border-radius: 50px; font-weight: 600; z-index: 2000; display: none;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    /* ===== HERO ===== */
+    .hero { 
+      min-height: 50vh; padding-top: 140px; display: flex; 
+      align-items: center; justify-content: space-between;
+      max-width: 1100px; margin: auto; padding-inline: 25px; 
+    }
+    
+    .hero-content { flex: 1; animation: fadeUp 1s ease; }
+    .badge { 
+      background: var(--primary-light); padding: 8px 20px; 
+      border-radius: 30px; color: #fff; font-weight: 700; 
+      margin-bottom: 20px; display: inline-flex; align-items: center; gap: 8px;
+      font-size: 0.9rem;
+    }
+    .hero h1 { font-size: 3.2rem; margin-bottom: 20px; line-height: 1.1; }
+    .hero h1 span { color: var(--primary); position: relative; }
+    .hero p { color: #444; font-size: 1.1rem; max-width: 500px; line-height: 1.6; }
+
+    .hero-image-container { flex: 1; display: flex; justify-content: flex-end; }
+    .hero-gif { width: 100%; max-width: 320px; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1)); animation: bounce 3s ease-in-out infinite; }
+
+    /* ===== FORMULÁRIO ===== */
+    .contact-section { padding: 60px 25px 100px; max-width: 1200px; margin: auto; }
+    
+    .form-wrapper {
+      max-width: 700px; margin: auto; background: var(--white); 
+      padding: 45px; border-radius: 30px; 
+      box-shadow: var(--shadow); position: relative;
+    }
+
+    .contact-form h2 { color: var(--primary); margin-bottom: 30px; font-size: 2rem; text-align: center; }
+    .contact-form label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.9rem; color: #555; }
+    
+    .contact-form input, .contact-form textarea { 
+      width: 100%; padding: 15px 20px; margin-bottom: 25px; 
+      border-radius: 15px; border: 2px solid #E0F2F1; 
+      font-family: inherit; font-size: 1rem; transition: 0.3s;
+      background: #F9FFFF;
+    }
+    
+    .contact-form input:focus, .contact-form textarea:focus {
+      outline: none; border-color: var(--primary-light); background: #fff;
+      box-shadow: 0 0 0 4px rgba(0, 188, 212, 0.1);
+    }
+
+    .contact-form textarea { resize: none; min-height: 150px; }
+    
+    .contact-form button { 
+      width: 100%; background: var(--primary); color: #fff; 
+      border: none; padding: 18px; font-size: 1.1rem; 
+      font-weight: 700; border-radius: 15px; cursor: pointer; 
+      transition: 0.3s; box-shadow: 0 5px 15px rgba(0, 172, 193, 0.2);
+    }
+    .contact-form button:hover { background: var(--primary-light); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0, 172, 193, 0.3); }
+
+    /* ===== INFO DE CONTATO ===== */
+    .contact-info { margin-top: 50px; display: flex; gap: 20px; justify-content: center; }
+    .info-card { 
+      background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(5px);
+      padding: 20px 40px; border-radius: 20px; border: 1px solid var(--white);
+      text-align: center; transition: 0.3s;
+    }
+    .info-card:hover { transform: translateY(-5px); background: var(--white); }
+    .info-card i { color: var(--primary); font-size: 1.5rem; margin-bottom: 10px; display: block; }
+    .info-card h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: #777; }
+    .info-card p a { font-weight: 700; color: var(--primary); }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--white); padding: 80px 25px 30px;
+      border-top: 1px solid var(--header-bg); color: var(--text-dark);
+      border-radius: 50px 50px 0 0; margin-top: 50px;
+    }
+
+    .footer-container {
+      max-width: 1200px; margin: auto; display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px;
+    }
+
+    .footer-logo { font-size: 1.8rem; font-weight: 800; color: var(--primary); margin-bottom: 15px; }
+    .footer-about { color: #666; font-size: 0.95rem; line-height: 1.6; }
+
+    .footer-column h4 { color: var(--text-dark); margin-bottom: 20px; font-weight: 700; position: relative; }
+    .footer-column h4::after { content: ''; position: absolute; left: 0; bottom: -5px; width: 30px; height: 3px; background: var(--primary-light); }
+    .footer-column a { display: block; margin-bottom: 12px; color: #555; font-size: 0.9rem; }
+    .footer-column a:hover { color: var(--primary); transform: translateX(5px); }
+
+    .footer-bottom { margin-top: 60px; padding-top: 20px; border-top: 1px solid #eee; text-align: center; color: #999; font-size: 0.8rem; }
+
+    @media (max-width: 900px) { 
+      .hero { flex-direction: column; text-align: center; padding-top: 100px; } 
+      .hero-image-container { justify-content: center; margin-top: 30px; }
+      .hero h1 { font-size: 2.2rem; }
+      .footer-container { grid-template-columns: 1fr 1fr; }
+      .form-wrapper { padding: 30px 20px; }
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="angelToast" class="angel-toast"></div>
+
+<header>
+  <div class="nav">
+    <a href="index.html" class="logo">
+      <img src="imagens/pochacco.png" class="logo-img" alt="Logo">
+      Angel <span>Mystery</span>
+    </a>
+    <div class="menu">
+      <a href="index.html">Início</a>
+      <a href="areaangel.html">Área Angel</a>
+      <a href="blog.html">Blog</a>
+      <a href="avaliação.html">Avaliações</a>
+      <a href="sobre.html">Sobre Nós</a>
+    </div>
+    
+    <div id="auth-section" class="auth-wrapper">
+      <a href="/login" class="login-btn" id="login-btn">Fazer Login</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-content">
+    <div class="badge"><i class="fa-solid fa-paper-plane"></i> Central de Ajuda</div>
+    <h1>Fale com a nossa equipe <span>Angel Mystery</span></h1>
+    <p>Tem dúvidas ou precisa de ajuda com sua conta ou pedido? Preencha o formulário e nossa equipe entrará em contato.</p>
+  </div>
+  <div class="hero-image-container">
+    <img src="imagens/pochacco1.png" class="hero-gif" alt="Mascote Pochacco">
+  </div>
+</section>
+
+<section class="contact-section">
+  <div class="form-wrapper">
+    <form class="contact-form" action="https://formspree.io/f/xojnayzn" method="POST">
+      <h2>Fale Conosco!</h2>
+      
+      <label for="nome">Como podemos te chamar?</label>
+      <input type="text" id="nome" name="nome" placeholder="Seu nome completo" required>
+
+      <label for="email">Seu melhor e-mail</label>
+      <input type="email" id="email" name="email" placeholder="email@exemplo.com" required>
+
+      <label for="mensagem">O que você precisa?</label>
+      <textarea id="mensagem" name="mensagem" placeholder="Descreva sua dúvida ou problema detalhadamente..." required></textarea>
+
+      <button type="submit">Enviar Mensagem agora</button>
+    </form>
+  </div>
+
+  <div class="contact-info">
+    <div class="info-card">
+      <i class="fa-solid fa-envelope"></i>
+      <h4>E-mail Oficial</h4>
+      <p><a href="mailto:anngelmystery2@gmail.com">anngelmystery2@gmail.com</a></p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-container">
+    <div>
+      <div class="footer-logo">Angel Mystery</div>
+      <p class="footer-about">A plataforma favorita para suas necessidades de Robux. Segurança, rapidez e o melhor atendimento da comunidade.</p>
+    </div>
+
+    <div class="footer-column">
+      <h4>Plataforma</h4>
+      <a href="como-funciona.html">Como Funciona</a>
+      <a href="faq.html">FAQ</a>
+    </div>
+
+    <div class="footer-column">
+      <h4>Empresa</h4>
+      <a href="sobre.html">Sobre Nós</a>
+      <a href="contato.html">Contato</a>
+    </div>
+
+    <div class="footer-column">
+      <h4>Legal</h4>
+      <a href="termos.html">Termos de Compra</a>
+      <a href="privacidade.html">Política de Privacidade</a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    © 2026 Angel Mystery. Todos os direitos reservados. Feito com ❤️ para a comunidade.
+  </div>
+</footer>
+
+<script>
+  function showToast(msg) {
+    const toast = document.getElementById('angelToast');
+    toast.innerText = msg;
+    toast.style.display = 'block';
+    setTimeout(() => { toast.style.display = 'none'; }, 3000);
+  }
+
+  function toggleUserMenu() {
+    const dropdown = document.getElementById('contactDropdown');
+    if(dropdown) dropdown.classList.toggle('active');
+  }
+
+  function handleLogout(e) {
+    e.preventDefault();
+    showToast("Tchauzinho! O Pochacco te espera na próxima... 🐶");
+    setTimeout(() => {
+      localStorage.removeItem('user');
+      localStorage.removeItem('adm_user');
+      localStorage.removeItem('adm_avatar');
+      localStorage.removeItem('adm_role');
+      window.location.reload();
+    }, 1500);
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const admUser = localStorage.getItem('adm_user');
+    const admAvatar = localStorage.getItem('adm_avatar');
+    const admRole = localStorage.getItem('adm_role');
+    const authSection = document.getElementById('auth-section');
+
+    let activeUser = null;
+
+    if (admUser) {
+        activeUser = {
+            username: admUser,
+            avatar: (admAvatar && admAvatar !== 'staffs/') ? admAvatar : 'imagens/pochacco.png',
+            label: admRole ? `${admRole} 👑` : "Administrador 👑",
+            isAdm: true
+        };
+    } else if (user) {
+        activeUser = {
+            username: user.username,
+            avatar: user.avatar,
+            label: "Usuário Verificado 🐶",
+            isAdm: false
+        };
+    }
+
+    if (activeUser && authSection) {
+      authSection.innerHTML = `
+        <div class="user-profile-menu" onclick="toggleUserMenu()">
+          <img src="${activeUser.avatar}" class="user-avatar-nav">
+          <span style="font-weight: 600; font-size: 0.9rem; color: #1A1A1A;">${activeUser.username}</span>
+          <i class="fa-solid fa-caret-down" style="font-size: 0.8rem; color: #00ACC1;"></i>
+          
+          <div class="dropdown-box" id="contactDropdown">
+            <div class="dropdown-info">
+                <span class="name">${activeUser.username}</span>
+                <span class="role">${activeUser.label}</span>
+            </div>
+            <a href="perfil.html" class="dropdown-item"><i class="fa-solid fa-user-circle"></i> Meu Perfil</a>
+            <a href="chat.html" class="dropdown-item"><i class="fa-solid fa-comments"></i> Chat Global</a>
+
+            ${activeUser.isAdm ? `
+                <a href="painel-adm.html" class="dropdown-item" style="color: #00ACC1;">
+                    <i class="fa-solid fa-crown"></i> Painel Admin
+                </a>
+            ` : ''}
+
+            <a href="#" onclick="handleLogout(event)" class="dropdown-item logout-item"><i class="fa-solid fa-sign-out-alt"></i> Sair</a>
+          </div>
+        </div>
+      `;
+    }
+  });
+
+  window.onclick = function(event) {
+    if (!event.target.closest('.user-profile-menu')) {
+      const dropdown = document.getElementById('contactDropdown');
+      if (dropdown) dropdown.classList.remove('active');
+    }
+  }
+</script>
+
+</body>
+</html>

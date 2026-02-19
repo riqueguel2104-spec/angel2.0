@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Angel Admin • Gestão de Usuários</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #ff5fb7;
+            --secondary: #c85bff;
+            --bg-dark: #070707;
+            --card-bg: rgba(255, 255, 255, 0.04);
+            --border: rgba(255, 133, 200, 0.15);
+            --text-main: #ffffff;
+            --text-dim: #9ca3af;
+            --danger: #ff4d4d;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        /* --- MODAL ESTILIZADO --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            display: none; /* Escondido por padrão */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #111;
+            border: 1px solid var(--border);
+            padding: 30px;
+            border-radius: 24px;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            animation: modalPop 0.3s ease-out;
+        }
+
+        @keyframes modalPop {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-content h2 { font-family: 'Space Grotesk'; color: var(--danger); margin-top: 0; }
+        .modal-content p { color: var(--text-dim); margin-bottom: 30px; }
+
+        .modal-buttons { display: flex; gap: 10px; justify-content: center; }
+        /* ------------------------ */
+
+        header {
+            background: rgba(7, 7, 7, 0.8);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 25px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            margin: 0;
+        }
+
+        .user-count {
+            background: var(--card-bg);
+            padding: 5px 15px;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+            font-size: 0.8rem;
+            color: var(--primary);
+        }
+
+        .table-container {
+            background: var(--card-bg);
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 20px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-dim);
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            font-size: 0.9rem;
+        }
+
+        tr:hover td { background: rgba(255, 95, 183, 0.02); }
+
+        .user-cell { display: flex; align-items: center; gap: 12px; }
+        .user-avatar { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--primary); }
+        .username { font-weight: 600; display: block; }
+        .user-id { font-size: 0.7rem; color: var(--text-dim); }
+
+        .badge { padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; }
+        .badge-vpn { background: rgba(255, 85, 85, 0.2); color: #ff5555; }
+        .badge-safe { background: rgba(85, 255, 150, 0.1); color: #55ff96; }
+
+        .info-tag { display: block; font-size: 0.75rem; color: var(--text-dim); }
+
+        .btn {
+            background: none;
+            border: 1px solid var(--border);
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+        .btn:hover { border-color: var(--primary); color: var(--primary); }
+
+        .btn-danger {
+            border-color: rgba(255, 77, 77, 0.3);
+            color: var(--danger);
+        }
+        .btn-danger:hover { background: var(--danger); color: white; border-color: var(--danger); }
+
+        .btn-delete-row {
+            color: var(--text-dim);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: 0.2s;
+        }
+        .btn-delete-row:hover { color: var(--danger); transform: scale(1.2); }
+
+        .loading { padding: 50px; text-align: center; color: var(--primary); }
+    </style>
+</head>
+<body>
+
+    <div id="confirmModal" class="modal-overlay">
+        <div class="modal-content">
+            <i class="fa-solid fa-triangle-exclamation fa-3x" style="color: var(--danger); margin-bottom: 15px;"></i>
+            <h2 id="modalTitle">Confirmar Ação</h2>
+            <p id="modalText">Você tem certeza que deseja realizar esta exclusão?</p>
+            <div class="modal-buttons">
+                <button onclick="closeModal()" class="btn">Cancelar</button>
+                <button id="confirmBtn" class="btn btn-danger">Sim, Apagar</button>
+            </div>
+        </div>
+    </div>
+
+    <header>
+        <a href="painel-adm.html" class="logo"><i class="fa-solid fa-chevron-left"></i> VOLTAR AO PAINEL</a>
+        <div class="user-count"><span id="total-users">0</span> Usuários Registrados</div>
+    </header>
+
+    <main class="container">
+        <div class="page-header">
+            <div>
+                <h1>Audit de Acessos</h1>
+                <p style="color: var(--text-dim)">Gerencie os registros de entrada do sistema.</p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button onclick="openDeleteModal('ALL')" class="btn btn-danger">
+                    <i class="fa-solid fa-trash-can"></i> Limpar Tudo
+                </button>
+                <button onclick="loadUsers()" class="btn">
+                    <i class="fa-solid fa-rotate"></i> Atualizar
+                </button>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Usuário</th>
+                        <th>Rede / IP</th>
+                        <th>Localização</th>
+                        <th>Hardware</th>
+                        <th>Data</th>
+                        <th style="text-align: center;">Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="user-table-body"></tbody>
+            </table>
+            <div id="loader" class="loading">
+                <i class="fa-solid fa-circle-notch fa-spin fa-2x"></i>
+                <p>Sincronizando registros...</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Variável global para guardar o que será apagado
+        let itemToDelete = null;
+
+        function openDeleteModal(id) {
+            itemToDelete = id;
+            const modal = document.getElementById('confirmModal');
+            const title = document.getElementById('modalTitle');
+            const text = document.getElementById('modalText');
+
+            if (id === 'ALL') {
+                title.innerText = "Limpar Tudo";
+                text.innerText = "ATENÇÃO: Isso apagará TODOS os registros permanentemente! Esta ação não pode ser desfeita.";
+            } else {
+                title.innerText = "Apagar Registro";
+                text.innerText = "Deseja remover este registro específico da lista?";
+            }
+
+            modal.style.display = 'flex';
+            
+            // Configura o botão de confirmação
+            document.getElementById('confirmBtn').onclick = () => {
+                executeDelete(id);
+            };
+        }
+
+        function closeModal() {
+            document.getElementById('confirmModal').style.display = 'none';
+        }
+
+        async function executeDelete(id) {
+            try {
+                const response = await fetch('/api/users-list', {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: id })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    closeModal();
+                    loadUsers(); 
+                }
+            } catch (error) {
+                alert("Erro ao apagar dado.");
+            }
+        }
+
+        async function loadUsers() {
+            const tbody = document.getElementById('user-table-body');
+            const loader = document.getElementById('loader');
+            
+            try {
+                const response = await fetch('/api/users-list');
+                const users = await response.json();
+                
+                document.getElementById('total-users').innerText = users.length;
+                loader.style.display = 'none';
+                tbody.innerHTML = '';
+
+                if (users.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 50px; color: #666;">Nenhum login registrado.</td></tr>';
+                    return;
+                }
+
+                users.reverse().forEach(data => {
+                    const row = document.createElement('tr');
+                    const isVpn = data.geo.isVpn.includes('Sim');
+                    
+                    row.innerHTML = `
+                        <td>
+                            <div class="user-cell">
+                                <img src="${data.avatar}" class="user-avatar">
+                                <div>
+                                    <span class="username">${data.user.username}</span>
+                                    <span class="user-id">ID: ${data.user.id}</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span style="font-family: monospace; color: var(--primary)">${data.ip}</span>
+                            <span class="badge ${isVpn ? 'badge-vpn' : 'badge-safe'}">
+                                ${isVpn ? '🚩 Risco' : '✅ Seguro'}
+                            </span>
+                        </td>
+                        <td>
+                            <span>${data.geo.city}, ${data.geo.country}</span>
+                            <span class="info-tag">${data.geo.isp}</span>
+                        </td>
+                        <td>
+                            <span class="info-tag"><i class="fa-solid fa-microchip"></i> ${data.extra.gpu.substring(0,20)}...</span>
+                            <span class="info-tag"><i class="fa-solid fa-memory"></i> ${data.extra.ram}GB RAM</span>
+                        </td>
+                        <td>
+                            <span>${new Date(data.loginDate).toLocaleDateString('pt-BR')}</span>
+                            <span class="info-tag">${new Date(data.loginDate).toLocaleTimeString('pt-BR')}</span>
+                        </td>
+                        <td style="text-align: center;">
+                            <button title="Apagar Registro" onclick="openDeleteModal('${data.user.id}')" class="btn-delete-row">
+                                <i class="fa-solid fa-circle-xmark"></i>
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            } catch (error) {
+                loader.innerHTML = '<p style="color: #ff5555">Erro de conexão.</p>';
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            if (!localStorage.getItem('adm_user')) {
+                window.location.href = "/adm";
+            } else {
+                loadUsers();
+            }
+        });
+    </script>
+</body>
+</html>

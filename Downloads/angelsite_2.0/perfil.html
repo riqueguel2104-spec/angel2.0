@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Meu Perfil — Angel Mystery</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
+
+        :root {
+            --primary: #1a1a1a;
+            --secondary: #fcd307;
+            --accent: #333;
+            --bg-dark: #050505;
+            --card-dark: #111111;
+            --border: rgba(255, 255, 255, 0.08);
+            --text-muted: #888;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-dark);
+            color: #fff;
+            min-height: 100vh;
+            background: radial-gradient(circle at 50% 0%, #1e1e1e 0%, #050505 100%);
+            overflow-x: hidden;
+        }
+
+        /* ---------- HEADER ---------- */
+        header {
+            position: fixed;
+            top: 0; width: 100%;
+            padding: 12px 0;
+            background: rgba(5, 5, 5, 0.8);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--secondary);
+            z-index: 1000;
+        }
+
+        .nav { max-width: 1200px; margin: auto; padding: 0 25px; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.3rem; font-weight: 800; text-decoration: none; color: #fff; display: flex; align-items: center; gap: 12px; }
+        .logo span { color: var(--secondary); text-transform: uppercase; font-size: 1.1rem; }
+        .logo img { width: 32px; filter: drop-shadow(0 0 5px rgba(252, 211, 7, 0.3)); }
+        
+        .menu { display: flex; gap: 25px; }
+        .menu a { color: #ccc; text-decoration: none; font-size: 0.85rem; font-weight: 500; }
+        .menu a:hover { color: var(--secondary); transform: translateY(-1px); }
+
+        .user-menu-container { position: relative; }
+        .user-trigger {
+            display: flex; align-items: center; gap: 12px; padding: 6px 14px;
+            border-radius: 100px; cursor: pointer; border: 1px solid var(--border);
+            background: rgba(255,255,255,0.05);
+        }
+        .user-trigger:hover { background: rgba(252, 211, 7, 0.1); border-color: var(--secondary); }
+        .user-trigger img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 1px solid var(--secondary); }
+        .user-trigger span { font-size: 0.85rem; font-weight: 600; }
+
+        /* ---------- DROPDOWN ---------- */
+        .dropdown-content {
+            position: absolute; top: calc(100% + 15px); right: 0; width: 280px;
+            background: #121212; border-radius: 20px; border: 1px solid var(--secondary);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.9); display: none; overflow: hidden; z-index: 1001;
+        }
+        .dropdown-content.active { display: block; animation: dropAnim 0.3s ease; }
+        @keyframes dropAnim { from { opacity: 0; transform: translateY(-15px); } to { opacity: 1; transform: translateY(0); } }
+
+        .dropdown-user-info {
+            padding: 20px; display: flex; align-items: center; gap: 15px;
+            background: linear-gradient(to bottom, rgba(252,211,7,0.1), transparent);
+            border-bottom: 1px solid var(--border);
+        }
+        .dropdown-user-info img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--secondary); }
+        .user-details h4 { font-size: 0.95rem; }
+        .user-details p { font-size: 0.7rem; color: var(--secondary); font-weight: 800; letter-spacing: 1px; }
+
+        .dropdown-link { display: flex; align-items: center; gap: 12px; padding: 14px 20px; color: #bbb; text-decoration: none; font-size: 0.85rem; }
+        .dropdown-link:hover { background: rgba(255,255,255,0.03); color: var(--secondary); padding-left: 25px; }
+        .dropdown-divider { height: 1px; background: var(--border); margin: 5px 15px; }
+
+        /* ---------- PERFIL CONTAINER ---------- */
+        .profile-container {
+            max-width: 1100px; margin: 130px auto 60px;
+            display: grid; grid-template-columns: 340px 1fr; gap: 35px; padding: 0 25px;
+        }
+
+        /* CARD ESQUERDO */
+        .side-card {
+            background: var(--card-dark); border-radius: 28px;
+            text-align: center; border: 1px solid var(--border); position: relative;
+            overflow: hidden; padding-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        .profile-banner-display {
+            width: 100%; height: 120px; background: #222;
+            background-size: cover; background-position: center;
+            position: relative;
+        }
+        .profile-banner-display::after {
+            content: ""; position: absolute; bottom: 0; left: 0; width: 100%; height: 50%;
+            background: linear-gradient(to top, var(--card-dark), transparent);
+        }
+
+        .avatar-box { 
+            width: 130px; height: 130px; margin: -65px auto 15px; 
+            border: 6px solid var(--card-dark); border-radius: 50%;
+            background: var(--bg-dark); position: relative; z-index: 5;
+        }
+        .avatar-box img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+        
+        .change-avatar-btn {
+            position: absolute; bottom: 5px; right: 5px;
+            background: var(--secondary); color: #000;
+            width: 34px; height: 34px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; border: 3px solid var(--card-dark); font-size: 0.8rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .change-avatar-btn:hover { transform: scale(1.1) rotate(10deg); }
+
+        .display-name { font-size: 1.4rem; font-weight: 800; margin-bottom: 2px; }
+        .display-role { font-size: 0.7rem; color: var(--secondary); font-weight: 800; letter-spacing: 2px; margin-bottom: 8px; }
+        .display-id { font-size: 0.75rem; color: var(--text-muted); background: rgba(255,255,255,0.05); display: inline-block; padding: 2px 10px; border-radius: 50px; margin-bottom: 15px; }
+
+        .social-buttons { display: flex; justify-content: center; gap: 12px; margin-top: 15px; }
+        .social-btn {
+            width: 38px; height: 38px; border-radius: 12px; background: #1a1a1a;
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; text-decoration: none; font-size: 1.1rem; border: 1px solid var(--border);
+        }
+        .social-btn:hover { border-color: var(--secondary); color: var(--secondary); transform: translateY(-3px); background: #000; }
+
+        /* CARD DIREITO (CONFIGS) */
+        .info-card {
+            background: var(--card-dark); padding: 45px; border-radius: 28px;
+            border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        .section-title {
+            font-size: 1.1rem; margin-bottom: 30px; display: flex; align-items: center; gap: 12px;
+        }
+        .section-title::before { content: ""; width: 4px; height: 20px; background: var(--secondary); border-radius: 10px; }
+
+        .input-group { margin-bottom: 25px; }
+        .input-group label { display: block; font-size: 0.7rem; color: var(--text-muted); margin-bottom: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        
+        input, textarea {
+            width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border);
+            padding: 14px 18px; border-radius: 14px; color: #fff; font-family: inherit; outline: none; font-size: 0.9rem;
+        }
+        input:focus, textarea:focus { border-color: var(--secondary); background: rgba(0,0,0,0.5); }
+
+        .banner-upload-btn {
+            background: #1a1a1a; color: #eee; border: 1px dashed var(--border); padding: 15px;
+            border-radius: 14px; cursor: pointer; width: 100%; text-align: center; font-size: 0.85rem;
+        }
+        .banner-upload-btn:hover { border-color: var(--secondary); color: var(--secondary); }
+
+        .btn-save {
+            background: var(--secondary); color: #000; width: 100%; padding: 16px; 
+            border-radius: 14px; font-weight: 800; border: none; cursor: pointer; margin-top: 15px;
+            text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px;
+        }
+        .btn-save:hover { filter: brightness(1.1); box-shadow: 0 0 20px rgba(252, 211, 7, 0.2); }
+
+        .restore-btn {
+            margin-top: 25px; background: rgba(88, 101, 242, 0.1); color: #5865F2;
+            border: 1px solid rgba(88, 101, 242, 0.3); padding: 10px 20px; border-radius: 12px;
+            font-size: 0.75rem; cursor: pointer; font-weight: 700; display: inline-flex; align-items: center; gap: 8px;
+        }
+        .restore-btn:hover { background: #5865F2; color: #fff; }
+
+        .custom-alert {
+            position: fixed; bottom: 30px; right: 30px;
+            background: var(--secondary); color: #000; padding: 16px 28px;
+            border-radius: 16px; font-weight: 700; z-index: 9999;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: none; animation: slideIn 0.4s ease forwards;
+        }
+
+        @keyframes slideIn { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
+
+        @media (max-width: 850px) {
+            .profile-container { grid-template-columns: 1fr; margin-top: 110px; }
+            .menu { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="siteAlert" class="custom-alert"></div>
+
+<input type="file" id="avatarInput" style="display: none;" accept="image/*" onchange="previewAndSaveAvatar(event)">
+<input type="file" id="bannerInput" style="display: none;" accept="image/*" onchange="previewAndSaveBanner(event)">
+
+<header>
+    <nav class="nav">
+        <a href="index.html" class="logo">
+            <img src="imagens/badtzumaru.png" alt="Badtz">
+            Angel<span>Mystery</span>
+        </a>
+        <div class="menu">
+            <a href="index.html">Início</a>
+            <a href="areaangel.html">Área Angel</a>
+            <a href="blog.html">Blog</a>
+            <a href="avaliação.html">Avaliações</a>
+            <a href="sobre.html">Sobre Nós</a>
+        </div>
+        <div class="user-menu-container">
+            <div class="user-trigger" onclick="toggleDropdown()">
+                <img id="navAvatar" src="imagens/badtzumaru.png">
+                <span id="navUser">...</span>
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+            <div class="dropdown-content" id="userDropdown">
+                <div class="dropdown-user-info">
+                    <img id="dropAvatar" src="imagens/badtzumaru.png">
+                    <div class="user-details">
+                        <h4 id="dropUser">...</h4>
+                        <p id="dropRole">Usuário</p>
+                    </div>
+                </div>
+                <a href="perfil.html" class="dropdown-link"><i class="fa-solid fa-user"></i> Meu Perfil</a>
+                <a href="chat.html" class="dropdown-link"><i class="fa-solid fa-comments"></i> Chat Global</a>
+                <div id="staffLinkContainer"></div> <div class="dropdown-divider"></div>
+                <a href="#" onclick="confirmLogout(event)" class="dropdown-link" style="color: #ff5555;">
+                    <i class="fa-solid fa-right-from-bracket"></i> Sair da Conta
+                </a>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<div class="profile-container">
+    <aside class="side-card">
+        <div id="profileBanner" class="profile-banner-display"></div>
+        <div class="avatar-box">
+            <img id="userAvatar" src="imagens/badtzumaru.png">
+            <label for="avatarInput" class="change-avatar-btn" title="Mudar Avatar">
+                <i class="fa-solid fa-camera"></i>
+            </label>
+        </div>
+        <h2 class="display-name" id="displayUser">...</h2>
+        <p class="display-role" id="displayRole">MEMBRO</p>
+        <p class="display-id" id="displayId">ID: 000000</p>
+        <p id="displayBio" style="font-size: 0.85rem; color: #aaa; font-style: italic; margin: 5px 25px 20px; line-height: 1.5;">"..."</p>
+        
+        <div class="social-buttons">
+            <a href="#" id="linkInsta" target="_blank" class="social-btn"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" id="linkTiktok" target="_blank" class="social-btn"><i class="fa-brands fa-tiktok"></i></a>
+        </div>
+
+        <button class="restore-btn" onclick="restoreDiscordProfile()">
+            <i class="fa-brands fa-discord"></i> Restaurar Discord
+        </button>
+    </aside>
+
+    <main class="info-card">
+        <h3 class="section-title">Configurações de Perfil</h3>
+        
+        <div class="input-group">
+            <label>Banner de Fundo</label>
+            <div class="banner-upload-btn" onclick="document.getElementById('bannerInput').click()">
+                <i class="fa-solid fa-cloud-arrow-up" style="margin-right: 10px;"></i> Clique para carregar um novo banner
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label>Sua Biografia</label>
+            <textarea id="editBio" rows="3" placeholder="Escreva algo sobre você..."></textarea>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div class="input-group">
+                <label><i class="fa-brands fa-instagram"></i> Instagram</label>
+                <input type="text" id="editInsta" placeholder="@seu.user">
+            </div>
+            <div class="input-group">
+                <label><i class="fa-brands fa-tiktok"></i> TikTok</label>
+                <input type="text" id="editTiktok" placeholder="@seu.user">
+            </div>
+        </div>
+
+        <button class="btn-save" onclick="saveProfile()">Salvar Alterações</button>
+    </main>
+</div>
+
+<script>
+    function showSiteMessage(msg) {
+        const alertBox = document.getElementById('siteAlert');
+        alertBox.innerText = msg;
+        alertBox.style.display = 'block';
+        setTimeout(() => { alertBox.style.opacity = '0'; setTimeout(() => { alertBox.style.display = 'none'; alertBox.style.opacity = '1'; }, 500); }, 3000);
+    }
+
+    function toggleDropdown() { document.getElementById('userDropdown').classList.toggle('active'); }
+
+    function previewAndSaveAvatar(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = e => {
+            updateAvatarGlobally(e.target.result);
+            showSiteMessage("Avatar atualizado com sucesso! 🖤");
+        }
+        reader.readAsDataURL(file);
+    }
+
+    function previewAndSaveBanner(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = e => {
+            const img = e.target.result;
+            const storageKey = getStorageKey();
+            if(storageKey) {
+                localStorage.setItem(`banner_${storageKey}`, img);
+                document.getElementById('profileBanner').style.backgroundImage = `url(${img})`;
+                showSiteMessage("Banner atualizado! ✨");
+            }
+        }
+        reader.readAsDataURL(file);
+    }
+
+    function getStorageKey() {
+        const user = JSON.parse(localStorage.getItem('user'));
+        const adm = localStorage.getItem('adm_user');
+        return adm ? `adm_${adm}` : (user ? user.id : null);
+    }
+
+    function updateAvatarGlobally(imgData) {
+        const admUser = localStorage.getItem('adm_user');
+        if (admUser) {
+            localStorage.setItem('adm_avatar', imgData);
+        } else {
+            const userData = localStorage.getItem('user');
+            if (userData) {
+                const user = JSON.parse(userData);
+                user.avatar = imgData;
+                localStorage.setItem('user', JSON.stringify(user));
+            }
+        }
+        document.getElementById('userAvatar').src = imgData;
+        document.getElementById('navAvatar').src = imgData;
+        document.getElementById('dropAvatar').src = imgData;
+    }
+
+    // ARRUAMDO O RESTORE: Salva o avatar original na primeira vez que o perfil carrega
+    function restoreDiscordProfile() {
+        const userData = localStorage.getItem('user');
+        if (!userData) return;
+        const user = JSON.parse(userData);
+        
+        // Se existir o original, usa ele. Se não, usa o que está no objeto (que deve ser o primeiro do login)
+        const discordImg = user.originalAvatar || user.avatar || 'imagens/badtzumaru.png';
+        
+        updateAvatarGlobally(discordImg);
+        showSiteMessage("Perfil original restaurado! 👾");
+    }
+
+    function init() {
+        const user = JSON.parse(localStorage.getItem('user'));
+        const admUser = localStorage.getItem('adm_user');
+        const admAvatar = localStorage.getItem('adm_avatar');
+        
+        let activeUser = null;
+
+        if (admUser) {
+            activeUser = {
+                username: admUser,
+                avatar: (admAvatar && admAvatar !== 'staffs/') ? admAvatar : 'imagens/badtzumaru.png',
+                id: "STAFF",
+                role: localStorage.getItem('adm_role') || "ADMIN",
+                isStaff: true
+            };
+            document.getElementById('staffLinkContainer').innerHTML = `
+                <a href="painel-adm.html" class="dropdown-link" style="color: var(--secondary);">
+                    <i class="fa-solid fa-crown"></i> Painel Admin
+                </a>`;
+        } else if (user) {
+            // BACKUP DE SEGURANÇA: Se é a primeira vez, salva o avatar atual como original
+            if(!user.originalAvatar) {
+                user.originalAvatar = user.avatar;
+                localStorage.setItem('user', JSON.stringify(user));
+            }
+            activeUser = {
+                username: user.username,
+                avatar: user.avatar || 'imagens/badtzumaru.png',
+                id: user.id,
+                role: "USUÁRIO",
+                isStaff: false
+            };
+        }
+
+        if (!activeUser) { window.location.href = "index.html"; return; }
+
+        document.getElementById('navAvatar').src = activeUser.avatar;
+        document.getElementById('navUser').innerText = activeUser.username;
+        document.getElementById('dropAvatar').src = activeUser.avatar;
+        document.getElementById('dropUser').innerText = activeUser.username;
+        document.getElementById('dropRole').innerText = activeUser.role;
+        document.getElementById('userAvatar').src = activeUser.avatar;
+        document.getElementById('displayUser').innerText = activeUser.username;
+        document.getElementById('displayRole').innerText = activeUser.isStaff ? `${activeUser.role} 👑` : "MEMBRO 🍳";
+        document.getElementById('displayId').innerText = `ID: ${activeUser.id}`;
+        
+        const storageKey = activeUser.isStaff ? `adm_${activeUser.username}` : activeUser.id;
+        const savedBio = localStorage.getItem(`bio_${storageKey}`) || "Nenhuma biografia definida.";
+        const savedInsta = localStorage.getItem(`insta_${storageKey}`) || "";
+        const savedTiktok = localStorage.getItem(`tiktok_${storageKey}`) || "";
+        const savedBanner = localStorage.getItem(`banner_${storageKey}`);
+
+        document.getElementById('displayBio').innerText = savedBio;
+        document.getElementById('editBio').value = savedBio === "Nenhuma biografia definida." ? "" : savedBio;
+        document.getElementById('editInsta').value = savedInsta;
+        document.getElementById('editTiktok').value = savedTiktok;
+
+        if(savedBanner) document.getElementById('profileBanner').style.backgroundImage = `url(${savedBanner})`;
+
+        updateSocialLinks(savedInsta, savedTiktok);
+    }
+
+    function updateSocialLinks(insta, tiktok) {
+        const iLink = document.getElementById('linkInsta');
+        const tLink = document.getElementById('linkTiktok');
+        iLink.href = insta ? `https://instagram.com/${insta.replace('@','')}` : "#";
+        tLink.href = tiktok ? `https://tiktok.com/@${tiktok.replace('@','')}` : "#";
+        iLink.style.opacity = insta ? "1" : "0.2";
+        tLink.style.opacity = tiktok ? "1" : "0.2";
+    }
+
+    function saveProfile() {
+        const storageKey = getStorageKey();
+        if(!storageKey) return;
+
+        const bio = document.getElementById('editBio').value;
+        const insta = document.getElementById('editInsta').value;
+        const tiktok = document.getElementById('editTiktok').value;
+
+        localStorage.setItem(`bio_${storageKey}`, bio);
+        localStorage.setItem(`insta_${storageKey}`, insta);
+        localStorage.setItem(`tiktok_${storageKey}`, tiktok);
+
+        document.getElementById('displayBio').innerText = bio || "Nenhuma biografia definida.";
+        updateSocialLinks(insta, tiktok);
+        showSiteMessage("Perfil salvo com sucesso! 🖤");
+    }
+
+    function confirmLogout(event) {
+        event.preventDefault();
+        showSiteMessage("Saindo da conta...");
+        setTimeout(() => {
+            localStorage.removeItem('user');
+            localStorage.removeItem('adm_user');
+            window.location.href = "index.html";
+        }, 1200);
+    }
+
+    window.onclick = e => { if (!e.target.closest('.user-menu-container')) document.getElementById('userDropdown').classList.remove('active'); }
+    window.onload = init;
+</script>
+
+</body>
+</html>
